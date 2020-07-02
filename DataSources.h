@@ -6,12 +6,12 @@
  *
  */
 
-extern NSString * const MVScannerErrorMessage;
+extern NSString *const MVScannerErrorMessage;
 
-@interface MVDataSourceTree : NSObject;
+@interface MVDataSourceTree : NSObject
+;
 @end
 
-
-@interface MVDataSourceDetails : NSObject;
+@interface MVDataSourceDetails : NSObject
+;
 @end
-

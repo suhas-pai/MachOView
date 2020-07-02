@@ -15,22 +15,21 @@
                       location:(uint32_t)location
                         length:(uint32_t)length;
 
-
 - (MVNode *)createPointers64Node:(MVNode *)parent
                          caption:(NSString *)caption
                         location:(uint32_t)location
                           length:(uint32_t)length;
 
--(MVNode *)createCStringsNode:(MVNode *)parent
-                      caption:(NSString *)caption
-                     location:(uint32_t)location
-                       length:(uint32_t)length;
+- (MVNode *)createCStringsNode:(MVNode *)parent
+                       caption:(NSString *)caption
+                      location:(uint32_t)location
+                        length:(uint32_t)length;
 
--(MVNode *)createLiteralsNode:(MVNode *)parent
-                      caption:(NSString *)caption
-                     location:(uint32_t)location
-                       length:(uint32_t)length
-                       stride:(uint32_t)stride;
+- (MVNode *)createLiteralsNode:(MVNode *)parent
+                       caption:(NSString *)caption
+                      location:(uint32_t)location
+                        length:(uint32_t)length
+                        stride:(uint32_t)stride;
 
 - (MVNode *)createIndPointersNode:(MVNode *)parent
                           caption:(NSString *)caption

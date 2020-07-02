@@ -13,7 +13,6 @@ typedef std::vector<uint64_t> Pointer64Vector;
 
 @interface MachOLayout (ObjC)
 
-
 - (MVNode *)createObjCCFStringsNode:(MVNode *)parent
                             caption:(NSString *)caption
                            location:(uint32_t)location
@@ -66,12 +65,12 @@ typedef std::vector<uint64_t> Pointer64Vector;
                             location:(uint32_t)location
                               length:(uint32_t)length;
 
--(void)parseObjC2ClassPointers:(PointerVector const *)classes
-              CategoryPointers:(PointerVector const *)categories
-              ProtocolPointers:(PointerVector const *)protocols;
+- (void)parseObjC2ClassPointers:(PointerVector const *)classes
+               CategoryPointers:(PointerVector const *)categories
+               ProtocolPointers:(PointerVector const *)protocols;
 
--(void)parseObjC2Class64Pointers:(Pointer64Vector const *)classes
-              Category64Pointers:(Pointer64Vector const *)categories
-              Protocol64Pointers:(Pointer64Vector const *)protocols;
+- (void)parseObjC2Class64Pointers:(Pointer64Vector const *)classes
+               Category64Pointers:(Pointer64Vector const *)categories
+               Protocol64Pointers:(Pointer64Vector const *)protocols;
 
 @end

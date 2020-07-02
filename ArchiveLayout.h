@@ -8,24 +8,24 @@
 
 #import "Layout.h"
 
-@interface MVObjectInfo : NSObject
-{
-  NSString *    name;
-  uint32_t      length;
-  MVLayout *    __weak layout;
+@interface MVObjectInfo : NSObject {
+    NSString *name;
+    uint32_t length;
+    MVLayout *__weak layout;
 }
 
-@property (nonatomic)                   NSString *  name;
-@property (nonatomic)                   uint32_t    length;
-@property (nonatomic,weak)  MVLayout *  layout;
+@property(nonatomic) NSString *name;
+@property(nonatomic) uint32_t length;
+@property(nonatomic, weak) MVLayout *layout;
 
 @end
 
-@interface ArchiveLayout : MVLayout 
-{
-  NSMutableDictionary * objectInfoMap; // <(NSNumber)object offset,MVObjectInfo>
+@interface ArchiveLayout : MVLayout {
+    NSMutableDictionary
+        *objectInfoMap; // <(NSNumber)object offset,MVObjectInfo>
 }
 
-+ (ArchiveLayout *)     layoutWithDataController:(MVDataController *)dc rootNode:(MVNode *)node;
++ (ArchiveLayout *)layoutWithDataController:(MVDataController *)dc
+                                   rootNode:(MVNode *)node;
 
 @end

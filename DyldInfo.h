@@ -8,20 +8,19 @@
 
 #import "MachOLayout.h"
 
-
-@interface DyldHelper : NSObject
-{
-  NSMutableDictionary * externalMap; // external symbol name --> symbols index (negative number)
+@interface DyldHelper : NSObject {
+    NSMutableDictionary *
+        externalMap; // external symbol name --> symbols index (negative number)
 }
 
-+(DyldHelper *) dyldHelperWithSymbols:(NSDictionary *)symbolNames is64Bit:(bool)is64Bit;
++ (DyldHelper *)dyldHelperWithSymbols:(NSDictionary *)symbolNames
+                              is64Bit:(bool)is64Bit;
 
 @end
 
-
 @interface MachOLayout (DyldInfo)
 
-enum BindNodeType {NodeTypeBind, NodeTypeWeakBind, NodeTypeLazyBind};
+enum BindNodeType { NodeTypeBind, NodeTypeWeakBind, NodeTypeLazyBind };
 
 - (MVNode *)createRebaseNode:(MVNode *)parent
                      caption:(NSString *)caption

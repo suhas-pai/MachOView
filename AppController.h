@@ -10,16 +10,12 @@
 
 @class MVPreferenceController;
 
-@interface MVAppController : NSObject <NSApplicationDelegate,NSOpenSavePanelDelegate>
-{
-  MVPreferenceController * preferenceController;
+@interface MVAppController
+    : NSObject <NSApplicationDelegate, NSOpenSavePanelDelegate> {
+    MVPreferenceController *preferenceController;
 }
 
 - (IBAction)showPreferencePanel:(id)sender;
 - (IBAction)attach:(id)sender;
 
 @end
-
-
-
-

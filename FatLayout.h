@@ -8,9 +8,10 @@
 
 #import "Layout.h"
 
-@interface FatLayout : MVLayout;
+@interface FatLayout : MVLayout
+;
 
-+ (FatLayout *)     layoutWithDataController:(MVDataController *)dc rootNode:(MVNode *)node;
++ (FatLayout *)layoutWithDataController:(MVDataController *)dc
+                               rootNode:(MVNode *)node;
 
 @end
-

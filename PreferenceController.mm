@@ -10,16 +10,13 @@
 
 @implementation MVPreferenceController
 
--(id)init
-{
-  self = [super initWithWindowNibName:@"Preferences"];
-  return self;
+- (id)init {
+    self = [super initWithWindowNibName:@"Preferences"];
+    return self;
 }
 
-- (IBAction)toggleOpenAtLaunch:(id)sender
-{
-  // nothing to do here?
+- (IBAction)toggleOpenAtLaunch:(id)sender {
+    // nothing to do here?
 }
 
 @end
-
