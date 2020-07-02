@@ -2409,6 +2409,14 @@ template <typename SectionT> struct CompareSectionByName {
         [node.details appendRow:@"":@"":@"00800000":@"MH_HAS_TLV_DESCRIPTORS"];
     if (mach_header->flags & MH_NO_HEAP_EXECUTION)
         [node.details appendRow:@"":@"":@"01000000":@"MH_NO_HEAP_EXECUTION"];
+    if (mach_header->flags & MH_APP_EXTENSION_SAFE)
+        [node.details appendRow:@"":@"":@"02000000":@"MH_APP_EXTENSION_SAFE"];
+    if (mach_header->flags & MH_NLIST_OUTOFSYNC_WITH_DYLDINFO)
+        [node.details appendRow:@"":@"":@"04000000":@"MH_NLIST_OUTOFSYNC_WITH_DYLDINFO"];
+    if (mach_header->flags & MH_SIM_SUPPORT)
+        [node.details appendRow:@"":@"":@"08000000":@"MH_SIM_SUPPORT"];
+    if (mach_header->flags & MH_DYLIB_IN_CACHE)
+        [node.details appendRow:@"":@"":@"80000000":@"MH_DYLIB_IN_CACHE"];
 
     return node;
 }
@@ -2579,6 +2587,14 @@ template <typename SectionT> struct CompareSectionByName {
         [node.details appendRow:@"":@"":@"00800000":@"MH_HAS_TLV_DESCRIPTORS"];
     if (mach_header_64->flags & MH_NO_HEAP_EXECUTION)
         [node.details appendRow:@"":@"":@"01000000":@"MH_NO_HEAP_EXECUTION"];
+    if (mach_header_64->flags & MH_APP_EXTENSION_SAFE)
+        [node.details appendRow:@"":@"":@"02000000":@"MH_APP_EXTENSION_SAFE"];
+    if (mach_header_64->flags & MH_NLIST_OUTOFSYNC_WITH_DYLDINFO)
+        [node.details appendRow:@"":@"":@"04000000":@"MH_NLIST_OUTOFSYNC_WITH_DYLDINFO"];
+    if (mach_header_64->flags & MH_SIM_SUPPORT)
+        [node.details appendRow:@"":@"":@"08000000":@"MH_SIM_SUPPORT"];
+    if (mach_header_64->flags & MH_DYLIB_IN_CACHE)
+        [node.details appendRow:@"":@"":@"80000000":@"MH_DYLIB_IN_CACHE"];
 
     uint32_t reserved = [dataController read_uint32:range
                                         lastReadHex:&lastReadHex];
