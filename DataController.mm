@@ -1161,11 +1161,13 @@ CFTypeRef)layout));
 
     switch (magic) {
     case FAT_MAGIC:
-    case FAT_CIGAM: {
+    case FAT_CIGAM:
+    case FAT_MAGIC_64:
+    case FAT_CIGAM_64: {
         struct fat_header fat_header;
         [fileData getBytes:&fat_header
                      range:NSMakeRange(location, sizeof(struct fat_header))];
-        if (magic == FAT_CIGAM)
+        if (magic == FAT_CIGAM || magic == FAT_CIGAM_64)
             swap_fat_header(&fat_header, NX_LittleEndian);
         [self createFatLayout:parent fat_header:&fat_header];
     } break;

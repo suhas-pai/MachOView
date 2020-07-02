@@ -55,10 +55,28 @@ using namespace std;
 
     uint32_t magic = [dataController read_uint32:range
                                      lastReadHex:&lastReadHex];
+
+    NSString *magicString = @"????";
+       switch (magic) {
+           case FAT_MAGIC:
+               magicString = @"FAT_MAGIC";
+               break;
+
+           case FAT_CIGAM:
+               magicString = @"FAT_CIGAM";
+               break;
+
+           case FAT_MAGIC_64:
+               magicString = @"FAT_MAGIC_64";
+               break;
+
+           case FAT_CIGAM_64:
+               magicString = @"FAT_CIGAM_64";
+               break;
+       }
+
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Magic Number":magic == FAT_MAGIC
-                                ? @"FAT_MAGIC"
-                                : magic == FAT_CIGAM ? @"FAT_CIGAM" : @"???"];
+    ]:lastReadHex:@"Magic Number":magicString];
 
     [node.details
         setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
@@ -75,10 +93,19 @@ using namespace std;
     for (uint32_t nimg = 0; nimg < fat_header->nfat_arch; ++nimg) {
         // need to make copy for byte swapping
         struct fat_arch fat_arch;
-        [dataController.fileData
-            getBytes:&fat_arch
-               range:NSMakeRange(NSMaxRange(range), sizeof(struct fat_arch))];
-        swap_fat_arch(&fat_arch, 1, NX_LittleEndian);
+        struct fat_arch_64 fat_arch_64;
+
+        if (magic == FAT_MAGIC_64 || magic == FAT_CIGAM_64) {
+            [dataController.fileData
+                getBytes:&fat_arch_64
+                   range:NSMakeRange(NSMaxRange(range), sizeof(fat_arch_64))];
+            swap_fat_arch_64(&fat_arch_64, 1, NX_LittleEndian);
+        } else {
+            [dataController.fileData
+                getBytes:&fat_arch
+                   range:NSMakeRange(NSMaxRange(range), sizeof(fat_arch))];
+            swap_fat_arch(&fat_arch, 1, NX_LittleEndian);
+        }
 
         [dataController read_uint32:range lastReadHex:&lastReadHex];
         [node.details
@@ -258,24 +285,45 @@ using namespace std;
                                                    : @"???")
                                             : @"???"];
 
-        [dataController read_uint32:range lastReadHex:&lastReadHex];
-        [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Offset"
-                     :[NSString stringWithFormat:@"%u", fat_arch.offset]];
+        if (magic == FAT_MAGIC_64 || magic == FAT_CIGAM_64) {
+            [dataController read_uint64:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Offset"
+                         :[NSString stringWithFormat:@"%llu", fat_arch_64.offset]];
 
-        [dataController read_uint32:range lastReadHex:&lastReadHex];
-        [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%u", fat_arch.size]];
+            [dataController read_uint64:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%llu", fat_arch_64.size]];
 
-        [dataController read_uint32:range lastReadHex:&lastReadHex];
-        [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Align"
-                     :[NSString stringWithFormat:@"%u", (1 << fat_arch.align)]];
+            [dataController read_uint32:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Align"
+                         :[NSString stringWithFormat:@"%u", (1 << fat_arch_64.align)]];
 
-        [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
+            [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
+        } else {
+            [dataController read_uint32:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Offset"
+                         :[NSString stringWithFormat:@"%u", fat_arch.offset]];
+
+            [dataController read_uint32:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%u", fat_arch.size]];
+
+            [dataController read_uint32:range lastReadHex:&lastReadHex];
+            [node.details
+                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+            ]:lastReadHex:@"Align"
+                         :[NSString stringWithFormat:@"%u", (1 << fat_arch.align)]];
+
+            [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
+        }
     }
 
     return node;

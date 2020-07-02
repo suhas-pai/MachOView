@@ -215,7 +215,7 @@ int64_t nrow_loaded; // number of loaded rows
 
     uint32_t magic = *(uint32_t *)[magicData bytes];
     if (magic == MH_MAGIC || magic == MH_MAGIC_64 || magic == FAT_CIGAM ||
-        magic == FAT_MAGIC) {
+        magic == FAT_MAGIC || magic == FAT_MAGIC_64 || magic == FAT_CIGAM_64) {
         return YES;
     }
 

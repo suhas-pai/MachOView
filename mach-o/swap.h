@@ -2,14 +2,14 @@
  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
  *
  * @APPLE_LICENSE_HEADER_START@
- * 
+ *
  * This file contains Original Code and/or Modifications of Original Code
  * as defined in and that are subject to the Apple Public Source License
  * Version 2.0 (the 'License'). You may not use this file except in
  * compliance with the License. Please obtain a copy of the License at
  * http://www.opensource.apple.com/apsl/ and read it before using this
  * file.
- * 
+ *
  * The Original Code and all software distributed under the License are
  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
@@ -17,7 +17,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
  * Please see the License for the specific language governing rights and
  * limitations under the License.
- * 
+ *
  * @APPLE_LICENSE_HEADER_END@
  */
 #ifndef _MACH_O_SWAP_H_
@@ -41,6 +41,11 @@ extern void swap_fat_header(
 
 extern void swap_fat_arch(
     struct fat_arch *fat_archs,
+    uint32_t nfat_arch,
+    enum NXByteOrder target_byte_order);
+
+extern void swap_fat_arch_64(
+    struct fat_arch_64 *fat_archs64,
     uint32_t nfat_arch,
     enum NXByteOrder target_byte_order);
 
@@ -186,6 +191,19 @@ extern void swap_source_version_command(
     struct source_version_command *sv,
     enum NXByteOrder target_byte_sex);
 
+extern void swap_note_command(
+    struct note_command *nc,
+    enum NXByteOrder target_byte_sex);
+
+extern void swap_build_version_command(
+    struct build_version_command *bv,
+    enum NXByteOrder target_byte_sex);
+
+extern void swap_build_tool_version(
+    struct build_tool_version *bt,
+    uint32_t ntools,
+    enum NXByteOrder target_byte_sex);
+
 extern void swap_prebind_cksum_command(
     struct prebind_cksum_command *cksum_cmd,
     enum NXByteOrder target_byte_sex);
@@ -214,6 +232,11 @@ extern void swap_ranlib(
     uint32_t nranlibs,
     enum NXByteOrder target_byte_order);
 
+extern void swap_ranlib_64(
+    struct ranlib_64 *ranlibs,
+    uint64_t nranlibs,
+    enum NXByteOrder target_byte_order);
+
 extern void swap_relocation_info(
     struct relocation_info *relocs,
     uint32_t nrelocs,
@@ -225,18 +248,18 @@ extern void swap_indirect_symbols(
     enum NXByteOrder target_byte_sex);
 
 extern void swap_dylib_reference(
-    struct dylib_reference *refs,  
+    struct dylib_reference *refs,
     uint32_t nrefs,
     enum NXByteOrder target_byte_sex);
 
-extern void swap_dylib_module(  
+extern void swap_dylib_module(
     struct dylib_module *mods,
-    uint32_t nmods, 
+    uint32_t nmods,
     enum NXByteOrder target_byte_sex);
 
-extern void swap_dylib_module_64(  
+extern void swap_dylib_module_64(
     struct dylib_module_64 *mods,
-    uint32_t nmods, 
+    uint32_t nmods,
     enum NXByteOrder target_byte_sex);
 
 extern void swap_dylib_table_of_contents(
