@@ -68,16 +68,16 @@ struct MVNodeSaver;
 {
     MVColoumns *coloumns;
     NSDictionary *attributes;
-    uint32_t offset;           // for sorting if necessary
-    uint32_t coloumnsOffset;   // offset of coloumns
-    uint32_t attributesOffset; // offset of attribues
+    NSUInteger offset;           // for sorting if necessary
+    long coloumnsOffset;   // offset of coloumns
+    long attributesOffset; // offset of attribues
     BOOL deleted;
     BOOL dirty; // eg. attributes has changed
 }
 
 @property (nonatomic) NSDictionary *attributes;
 @property (nonatomic) MVColoumns *coloumns;
-@property (nonatomic) uint32_t offset;
+@property (nonatomic) NSUInteger offset;
 @property (nonatomic) BOOL deleted;
 @property (nonatomic) BOOL dirty;
 
@@ -104,8 +104,8 @@ struct MVNodeSaver;
 - (MVRow *)getRowToDisplay:(NSUInteger)rowIndex;
 
 - (void)popRow;
-- (void)appendRow:(id)col0 :(id)col1 :(id)col2 :(id)col3;
-- (void)insertRowWithOffset:(uint32_t)offset
+- (void)appendRow:(id)col0:(id)col1:(id)col2:(id)col3;
+- (void)insertRowWithOffset:(NSUInteger)offset
                            :(id)col0
                            :(id)col1
                            :(id)col2
@@ -117,10 +117,10 @@ struct MVNodeSaver;
 - (NSUInteger)rowCount;
 - (void)setAttributes:(NSString *)firstArg, ... NS_REQUIRES_NIL_TERMINATION;
 - (void)setAttributesForRowIndex:(NSUInteger)index
-                                :(NSString *)firstArg,
+                            args:(NSString *)firstArg,
     ... NS_REQUIRES_NIL_TERMINATION;
 - (void)setAttributesFromRowIndex:(NSUInteger)index
-                                 :(NSString *)firstArg,
+                             args:(NSString *)firstArg,
     ... NS_REQUIRES_NIL_TERMINATION;
 
 @end
@@ -134,7 +134,7 @@ struct MVNodeSaver;
     NSRange dataRange;
     MVTable *details;
     NSMutableDictionary *userInfo;
-    uint32_t detailsOffset;
+    long detailsOffset;
 }
 
 @property (nonatomic) NSString *caption;
@@ -142,16 +142,16 @@ struct MVNodeSaver;
 @property (nonatomic) NSRange dataRange;
 @property (nonatomic) MVTable *details;
 @property (nonatomic) NSMutableDictionary *userInfo;
-@property (nonatomic) uint32_t detailsOffset;
+@property (nonatomic) long detailsOffset;
 
 - (NSUInteger)numberOfChildren;
 - (MVNode *)childAtIndex:(NSUInteger)n;
 - (MVNode *)insertChild:(NSString *)_caption
-               location:(uint32_t)location
-                 length:(uint32_t)length;
+               location:(NSInteger)location
+                 length:(NSUInteger)length;
 - (MVNode *)insertChildWithDetails:(NSString *)_caption
-                          location:(uint32_t)location
-                            length:(uint32_t)length
+                          location:(NSInteger)location
+                            length:(NSUInteger)length
                              saver:(MVNodeSaver &)saver;
 - (MVNode *)findNodeByUserInfo:(NSDictionary *)uinfo;
 - (void)openDetails;  // open swap file for reading details on demand
@@ -187,8 +187,8 @@ struct MVNodeSaver;
 - (NSString *)getARMCpu:(cpu_subtype_t)cpusubtype;
 
 - (void)createLayouts:(MVNode *)parent
-             location:(uint32_t)location
-               length:(uint32_t)length;
+             location:(NSInteger)location
+               length:(NSUInteger)length;
 - (void)updateTreeView:(MVNode *)node;
 - (void)updateTableView;
 - (void)updateStatus:(NSString *)status;

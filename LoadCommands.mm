@@ -136,7 +136,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSegmentNode:(MVNode *)parent
                         caption:(NSString *)caption
-                       location:(uint32_t)location
+                       location:(NSUInteger)location
                 segment_command:(struct segment_command const *)segment_command
 {
     MVNodeSaver nodeSaver;
@@ -150,96 +150,84 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:segment_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:segment_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", segment_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", segment_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Segment Name"
-                 :[NSString
-                      stringWithFormat:@"%s",
-                                       string(segment_command->segname, 16)
-                                           .c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Segment Name"
+              :[NSString
+       stringWithFormat:@"%s",
+       string(segment_command->segname, 16)
+       .c_str()]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"VM Address"
-                 :[NSString stringWithFormat:@"0x%X", segment_command->vmaddr]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"VM Address"
+              :[NSString stringWithFormat:@"0x%X", segment_command->vmaddr]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"VM Size":[NSString stringWithFormat:@"%u", segment_command->
-                                                               vmsize]];
+     ]:lastReadHex:@"VM Size":[NSString stringWithFormat:@"%u", segment_command->
+                               vmsize]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"File Offset"
-                 :[NSString stringWithFormat:@"%u", segment_command->fileoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"File Offset"
+              :[NSString stringWithFormat:@"%u", segment_command->fileoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"File Size"
-                 :[NSString stringWithFormat:@"%u", segment_command->filesize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"File Size"
+              :[NSString stringWithFormat:@"%u", segment_command->filesize]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Maximum VM Protection":@""];
+     ]:lastReadHex:@"Maximum VM Protection":@""];
 
-    if (segment_command->maxprot == VM_PROT_NONE)
-        [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
-    if (segment_command->maxprot & VM_PROT_READ)
-        [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
-    if (segment_command->maxprot & VM_PROT_WRITE)
-        [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
-    if (segment_command->maxprot & VM_PROT_EXECUTE)
-        [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
+    if (segment_command->maxprot == VM_PROT_NONE) [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
+    if (segment_command->maxprot & VM_PROT_READ) [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
+    if (segment_command->maxprot & VM_PROT_WRITE) [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
+    if (segment_command->maxprot & VM_PROT_EXECUTE) [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Initial VM Protection":@""];
+     ]:lastReadHex:@"Initial VM Protection":@""];
 
-    if (segment_command->initprot == VM_PROT_NONE)
-        [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
-    if (segment_command->initprot & VM_PROT_READ)
-        [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
-    if (segment_command->initprot & VM_PROT_WRITE)
-        [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
-    if (segment_command->initprot & VM_PROT_EXECUTE)
-        [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
+    if (segment_command->initprot == VM_PROT_NONE) [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
+    if (segment_command->initprot & VM_PROT_READ) [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
+    if (segment_command->initprot & VM_PROT_WRITE) [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
+    if (segment_command->initprot & VM_PROT_EXECUTE) [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Sections"
-                 :[NSString stringWithFormat:@"%u", segment_command->nsects]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of Sections"
+              :[NSString stringWithFormat:@"%u", segment_command->nsects]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Flags":@""];
+     ]:lastReadHex:@"Flags":@""];
 
-    if (segment_command->flags & SG_HIGHVM)
-        [node.details appendRow:@"":@"":@"00000001":@"SG_HIGHVM"];
-    if (segment_command->flags & SG_FVMLIB)
-        [node.details appendRow:@"":@"":@"00000002":@"SG_FVMLIB"];
-    if (segment_command->flags & SG_NORELOC)
-        [node.details appendRow:@"":@"":@"00000004":@"SG_NORELOC"];
-    if (segment_command->flags & SG_PROTECTED_VERSION_1)
-        [node.details appendRow:@"":@"":@"00000008":@"SG_PROTECTED_VERSION_1"];
+    if (segment_command->flags & SG_HIGHVM) [node.details appendRow:@"":@"":@"00000001":@"SG_HIGHVM"];
+    if (segment_command->flags & SG_FVMLIB) [node.details appendRow:@"":@"":@"00000002":@"SG_FVMLIB"];
+    if (segment_command->flags & SG_NORELOC) [node.details appendRow:@"":@"":@"00000004":@"SG_NORELOC"];
+    if (segment_command->flags & SG_PROTECTED_VERSION_1) [node.details appendRow:@"":@"":@"00000008":@"SG_PROTECTED_VERSION_1"];
 
     return node;
 }
@@ -247,7 +235,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createSectionNode:(MVNode *)parent
                       caption:(NSString *)caption
-                     location:(uint32_t)location
+                     location:(NSUInteger)location
                       section:(struct section const *)section
 {
     MVNodeSaver nodeSaver;
@@ -261,52 +249,52 @@ using namespace std;
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Section Name"
-                 :[NSString
-                      stringWithFormat:@"%s",
-                                       string(section->sectname, 16).c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Section Name"
+              :[NSString
+       stringWithFormat:@"%s",
+       string(section->sectname, 16).c_str()]];
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Segment Name"
-                 :[NSString
-                      stringWithFormat:@"%s",
-                                       string(section->segname, 16).c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Segment Name"
+              :[NSString
+       stringWithFormat:@"%s",
+       string(section->segname, 16).c_str()]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Address"
+     ]:lastReadHex:@"Address"
                            :[NSString stringWithFormat:@"0x%X", section->addr]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%u", section->size]];
+     ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%u", section->size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Offset":[NSString stringWithFormat:@"%u", section->offset]];
+     ]:lastReadHex:@"Offset":[NSString stringWithFormat:@"%u", section->offset]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Alignment"
-                 :[NSString stringWithFormat:@"%u", (1 << section->align)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Alignment"
+              :[NSString stringWithFormat:@"%u", (1 << section->align)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Relocations Offset"
+     ]:lastReadHex:@"Relocations Offset"
                            :[NSString stringWithFormat:@"%u", section->reloff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Relocations"
+     ]:lastReadHex:@"Number of Relocations"
                            :[NSString stringWithFormat:@"%u", section->nreloc]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Flags":@""];
+     ]:lastReadHex:@"Flags":@""];
 
     switch (section->flags & SECTION_TYPE) {
         case S_REGULAR:
@@ -329,25 +317,25 @@ using namespace std;
             break;
         case S_NON_LAZY_SYMBOL_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000006":@"S_NON_LAZY_SYMBOL_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000006":@"S_NON_LAZY_SYMBOL_POINTERS"];
             break;
         case S_LAZY_SYMBOL_POINTERS:
             [node.details appendRow:
-                                @"":@"":@"00000007":@"S_LAZY_SYMBOL_POINTERS"];
+             @""                   :@"":@"00000007":@"S_LAZY_SYMBOL_POINTERS"];
             break;
         case S_SYMBOL_STUBS:
             [node.details appendRow:@"":@"":@"00000008":@"S_SYMBOL_STUBS"];
             break;
         case S_MOD_INIT_FUNC_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000009":@"S_MOD_INIT_FUNC_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000009":@"S_MOD_INIT_FUNC_POINTERS"];
             break;
         case S_MOD_TERM_FUNC_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"0000000A":@"S_MOD_TERM_FUNC_POINTERS"];
+             appendRow:
+             @""      :@"":@"0000000A":@"S_MOD_TERM_FUNC_POINTERS"];
             break;
         case S_COALESCED:
             [node.details appendRow:@"":@"":@"0000000B":@"S_COALESCED"];
@@ -366,58 +354,48 @@ using namespace std;
             break;
         case S_LAZY_DYLIB_SYMBOL_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000010":@"S_LAZY_DYLIB_SYMBOL_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000010":@"S_LAZY_DYLIB_SYMBOL_POINTERS"];
             break;
         case S_THREAD_LOCAL_REGULAR:
             [node.details appendRow:
-                                @"":@"":@"00000011":@"S_THREAD_LOCAL_REGULAR"];
+             @""                   :@"":@"00000011":@"S_THREAD_LOCAL_REGULAR"];
             break;
         case S_THREAD_LOCAL_ZEROFILL:
             [node.details appendRow:
-                                @"":@"":@"00000012":@"S_THREAD_LOCAL_ZEROFILL"];
+             @""                   :@"":@"00000012":@"S_THREAD_LOCAL_ZEROFILL"];
             break;
         case S_THREAD_LOCAL_VARIABLES:
             [node.details
-                appendRow:
-                      @"":@"":@"00000013":@"S_THREAD_LOCAL_VARIABLES"];
+             appendRow:
+             @""      :@"":@"00000013":@"S_THREAD_LOCAL_VARIABLES"];
             break;
         case S_THREAD_LOCAL_VARIABLE_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000014":@"S_THREAD_LOCAL_VARIABLE_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000014":@"S_THREAD_LOCAL_VARIABLE_POINTERS"];
             break;
         case S_THREAD_LOCAL_INIT_FUNCTION_POINTERS:
             [node.details appendRow:
-                                @"":@"":@"00000015"
+             @""                   :@"":@"00000015"
                                    :@"S_THREAD_LOCAL_INIT_FUNCTION_POINTERS"];
             break;
     }
 
-    if (section->flags & S_ATTR_PURE_INSTRUCTIONS)
-        [node.details appendRow:
-                            @"":@"":@"80000000":@"S_ATTR_PURE_INSTRUCTIONS"];
-    if (section->flags & S_ATTR_NO_TOC)
-        [node.details appendRow:@"":@"":@"40000000":@"S_ATTR_NO_TOC"];
-    if (section->flags & S_ATTR_STRIP_STATIC_SYMS)
-        [node.details appendRow:
-                            @"":@"":@"20000000":@"S_ATTR_STRIP_STATIC_SYMS"];
-    if (section->flags & S_ATTR_NO_DEAD_STRIP)
-        [node.details appendRow:@"":@"":@"10000000":@"S_ATTR_NO_DEAD_STRIP"];
-    if (section->flags & S_ATTR_LIVE_SUPPORT)
-        [node.details appendRow:@"":@"":@"08000000":@"S_ATTR_LIVE_SUPPORT"];
-    if (section->flags & S_ATTR_SELF_MODIFYING_CODE)
-        [node.details appendRow:
-                            @"":@"":@"04000000":@"S_ATTR_SELF_MODIFYING_CODE"];
-    if (section->flags & S_ATTR_DEBUG)
-        [node.details appendRow:@"":@"":@"02000000":@"S_ATTR_DEBUG"];
-    if (section->flags & S_ATTR_SOME_INSTRUCTIONS)
-        [node.details appendRow:
-                            @"":@"":@"00000400":@"S_ATTR_SOME_INSTRUCTIONS"];
-    if (section->flags & S_ATTR_EXT_RELOC)
-        [node.details appendRow:@"":@"":@"00000200":@"S_ATTR_EXT_RELOC"];
-    if (section->flags & S_ATTR_LOC_RELOC)
-        [node.details appendRow:@"":@"":@"00000100":@"S_ATTR_LOC_RELOC"];
+    if (section->flags & S_ATTR_PURE_INSTRUCTIONS) [node.details appendRow:
+                                                    @""                   :@"":@"80000000":@"S_ATTR_PURE_INSTRUCTIONS"];
+    if (section->flags & S_ATTR_NO_TOC) [node.details appendRow:@"":@"":@"40000000":@"S_ATTR_NO_TOC"];
+    if (section->flags & S_ATTR_STRIP_STATIC_SYMS) [node.details appendRow:
+                                                    @""                   :@"":@"20000000":@"S_ATTR_STRIP_STATIC_SYMS"];
+    if (section->flags & S_ATTR_NO_DEAD_STRIP) [node.details appendRow:@"":@"":@"10000000":@"S_ATTR_NO_DEAD_STRIP"];
+    if (section->flags & S_ATTR_LIVE_SUPPORT) [node.details appendRow:@"":@"":@"08000000":@"S_ATTR_LIVE_SUPPORT"];
+    if (section->flags & S_ATTR_SELF_MODIFYING_CODE) [node.details appendRow:
+                                                      @""                   :@"":@"04000000":@"S_ATTR_SELF_MODIFYING_CODE"];
+    if (section->flags & S_ATTR_DEBUG) [node.details appendRow:@"":@"":@"02000000":@"S_ATTR_DEBUG"];
+    if (section->flags & S_ATTR_SOME_INSTRUCTIONS) [node.details appendRow:
+                                                    @""                   :@"":@"00000400":@"S_ATTR_SOME_INSTRUCTIONS"];
+    if (section->flags & S_ATTR_EXT_RELOC) [node.details appendRow:@"":@"":@"00000200":@"S_ATTR_EXT_RELOC"];
+    if (section->flags & S_ATTR_LOC_RELOC) [node.details appendRow:@"":@"":@"00000100":@"S_ATTR_LOC_RELOC"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location]
@@ -439,9 +417,9 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSegment64Node:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
+                         location:(NSUInteger)location
                segment_command_64:
-                   (struct segment_command_64 const *)segment_command_64
+    (struct segment_command_64 const *)segment_command_64
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -454,99 +432,87 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:segment_command_64->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:segment_command_64->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", segment_command_64->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", segment_command_64->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Segment Name"
-                 :[NSString
-                      stringWithFormat:@"%s",
-                                       string(segment_command_64->segname, 16)
-                                           .c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Segment Name"
+              :[NSString
+       stringWithFormat:@"%s",
+       string(segment_command_64->segname, 16)
+       .c_str()]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"VM Address":[NSString stringWithFormat:@"%qu",
-                                                           segment_command_64->
-                                                           vmaddr]];
+     ]:lastReadHex:@"VM Address":[NSString stringWithFormat:@"%qu",
+                                  segment_command_64->
+                                  vmaddr]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"VM Size":[NSString
-                                 stringWithFormat:@"%qu",
-                                                  segment_command_64->vmsize]];
+     ]:lastReadHex:@"VM Size":[NSString
+                               stringWithFormat:@"%qu",
+                               segment_command_64->vmsize]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"File Offset":[NSString stringWithFormat:@"%qu",
-                                                            segment_command_64->
-                                                            fileoff]];
+     ]:lastReadHex:@"File Offset":[NSString stringWithFormat:@"%qu",
+                                   segment_command_64->
+                                   fileoff]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"File Size":[NSString
-                                   stringWithFormat:@"%qu", segment_command_64->
-                                                            filesize]];
+     ]:lastReadHex:@"File Size":[NSString
+                                 stringWithFormat:@"%qu", segment_command_64->
+                                 filesize]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Maximum VM Protection":@""];
+     ]:lastReadHex:@"Maximum VM Protection":@""];
 
-    if (segment_command_64->maxprot == VM_PROT_NONE)
-        [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
-    if (segment_command_64->maxprot & VM_PROT_READ)
-        [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
-    if (segment_command_64->maxprot & VM_PROT_WRITE)
-        [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
-    if (segment_command_64->maxprot & VM_PROT_EXECUTE)
-        [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
+    if (segment_command_64->maxprot == VM_PROT_NONE) [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
+    if (segment_command_64->maxprot & VM_PROT_READ) [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
+    if (segment_command_64->maxprot & VM_PROT_WRITE) [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
+    if (segment_command_64->maxprot & VM_PROT_EXECUTE) [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Initial VM Protection":@""];
+     ]:lastReadHex:@"Initial VM Protection":@""];
 
-    if (segment_command_64->initprot == VM_PROT_NONE)
-        [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
-    if (segment_command_64->initprot & VM_PROT_READ)
-        [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
-    if (segment_command_64->initprot & VM_PROT_WRITE)
-        [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
-    if (segment_command_64->initprot & VM_PROT_EXECUTE)
-        [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
+    if (segment_command_64->initprot == VM_PROT_NONE) [node.details appendRow:@"":@"":@"00000000":@"VM_PROT_NONE"];
+    if (segment_command_64->initprot & VM_PROT_READ) [node.details appendRow:@"":@"":@"00000001":@"VM_PROT_READ"];
+    if (segment_command_64->initprot & VM_PROT_WRITE) [node.details appendRow:@"":@"":@"00000002":@"VM_PROT_WRITE"];
+    if (segment_command_64->initprot & VM_PROT_EXECUTE) [node.details appendRow:@"":@"":@"00000004":@"VM_PROT_EXECUTE"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Sections"
-                 :[NSString
-                      stringWithFormat:@"%u", segment_command_64->nsects]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of Sections"
+              :[NSString
+       stringWithFormat:@"%u", segment_command_64->nsects]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Flags":@""];
+     ]:lastReadHex:@"Flags":@""];
 
-    if (segment_command_64->flags & SG_HIGHVM)
-        [node.details appendRow:@"":@"":@"00000001":@"SG_HIGHVM"];
-    if (segment_command_64->flags & SG_FVMLIB)
-        [node.details appendRow:@"":@"":@"00000002":@"SG_FVMLIB"];
-    if (segment_command_64->flags & SG_NORELOC)
-        [node.details appendRow:@"":@"":@"00000004":@"SG_NORELOC"];
-    if (segment_command_64->flags & SG_PROTECTED_VERSION_1)
-        [node.details appendRow:@"":@"":@"00000008":@"SG_PROTECTED_VERSION_1"];
+    if (segment_command_64->flags & SG_HIGHVM) [node.details appendRow:@"":@"":@"00000001":@"SG_HIGHVM"];
+    if (segment_command_64->flags & SG_FVMLIB) [node.details appendRow:@"":@"":@"00000002":@"SG_FVMLIB"];
+    if (segment_command_64->flags & SG_NORELOC) [node.details appendRow:@"":@"":@"00000004":@"SG_NORELOC"];
+    if (segment_command_64->flags & SG_PROTECTED_VERSION_1) [node.details appendRow:@"":@"":@"00000008":@"SG_PROTECTED_VERSION_1"];
 
     return node;
 }
@@ -554,7 +520,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createSection64Node:(MVNode *)parent
                         caption:(NSString *)caption
-                       location:(uint32_t)location
+                       location:(NSUInteger)location
                      section_64:(struct section_64 const *)section_64
 {
     MVNodeSaver nodeSaver;
@@ -568,55 +534,55 @@ using namespace std;
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Section Name"
-                 :[NSString
-                      stringWithFormat:@"%s", string(section_64->sectname, 16)
-                                                  .c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Section Name"
+              :[NSString
+       stringWithFormat:@"%s", string(section_64->sectname, 16)
+       .c_str()]];
 
     [dataController read_string:range fixlen:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Segment Name"
-                 :[NSString
-                      stringWithFormat:@"%s", string(section_64->segname, 16)
-                                                  .c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Segment Name"
+              :[NSString
+       stringWithFormat:@"%s", string(section_64->segname, 16)
+       .c_str()]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Address":[NSString
-                                 stringWithFormat:@"%qu", section_64->addr]];
+     ]:lastReadHex:@"Address":[NSString
+                               stringWithFormat:@"%qu", section_64->addr]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%qu", section_64->size]];
+     ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%qu", section_64->size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Offset":[NSString
-                                stringWithFormat:@"%u", section_64->offset]];
+     ]:lastReadHex:@"Offset":[NSString
+                              stringWithFormat:@"%u", section_64->offset]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Alignment"
-                 :[NSString stringWithFormat:@"%u", (1 << section_64->align)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Alignment"
+              :[NSString stringWithFormat:@"%u", (1 << section_64->align)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Relocations Offset"
-                 :[NSString stringWithFormat:@"%u", section_64->reloff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Relocations Offset"
+              :[NSString stringWithFormat:@"%u", section_64->reloff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Relocations"
-                 :[NSString stringWithFormat:@"%u", section_64->nreloc]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of Relocations"
+              :[NSString stringWithFormat:@"%u", section_64->nreloc]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Flags":@""];
+     ]:lastReadHex:@"Flags":@""];
 
     switch (section_64->flags & SECTION_TYPE) {
         case S_REGULAR:
@@ -639,25 +605,25 @@ using namespace std;
             break;
         case S_NON_LAZY_SYMBOL_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000006":@"S_NON_LAZY_SYMBOL_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000006":@"S_NON_LAZY_SYMBOL_POINTERS"];
             break;
         case S_LAZY_SYMBOL_POINTERS:
             [node.details appendRow:
-                                @"":@"":@"00000007":@"S_LAZY_SYMBOL_POINTERS"];
+             @""                   :@"":@"00000007":@"S_LAZY_SYMBOL_POINTERS"];
             break;
         case S_SYMBOL_STUBS:
             [node.details appendRow:@"":@"":@"00000008":@"S_SYMBOL_STUBS"];
             break;
         case S_MOD_INIT_FUNC_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000009":@"S_MOD_INIT_FUNC_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000009":@"S_MOD_INIT_FUNC_POINTERS"];
             break;
         case S_MOD_TERM_FUNC_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"0000000A":@"S_MOD_TERM_FUNC_POINTERS"];
+             appendRow:
+             @""      :@"":@"0000000A":@"S_MOD_TERM_FUNC_POINTERS"];
             break;
         case S_COALESCED:
             [node.details appendRow:@"":@"":@"0000000B":@"S_COALESCED"];
@@ -676,58 +642,48 @@ using namespace std;
             break;
         case S_LAZY_DYLIB_SYMBOL_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000010":@"S_LAZY_DYLIB_SYMBOL_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000010":@"S_LAZY_DYLIB_SYMBOL_POINTERS"];
             break;
         case S_THREAD_LOCAL_REGULAR:
             [node.details appendRow:
-                                @"":@"":@"00000011":@"S_THREAD_LOCAL_REGULAR"];
+             @""                   :@"":@"00000011":@"S_THREAD_LOCAL_REGULAR"];
             break;
         case S_THREAD_LOCAL_ZEROFILL:
             [node.details appendRow:
-                                @"":@"":@"00000012":@"S_THREAD_LOCAL_ZEROFILL"];
+             @""                   :@"":@"00000012":@"S_THREAD_LOCAL_ZEROFILL"];
             break;
         case S_THREAD_LOCAL_VARIABLES:
             [node.details
-                appendRow:
-                      @"":@"":@"00000013":@"S_THREAD_LOCAL_VARIABLES"];
+             appendRow:
+             @""      :@"":@"00000013":@"S_THREAD_LOCAL_VARIABLES"];
             break;
         case S_THREAD_LOCAL_VARIABLE_POINTERS:
             [node.details
-                appendRow:
-                      @"":@"":@"00000014":@"S_THREAD_LOCAL_VARIABLE_POINTERS"];
+             appendRow:
+             @""      :@"":@"00000014":@"S_THREAD_LOCAL_VARIABLE_POINTERS"];
             break;
         case S_THREAD_LOCAL_INIT_FUNCTION_POINTERS:
             [node.details appendRow:
-                                @"":@"":@"00000015"
+             @""                   :@"":@"00000015"
                                    :@"S_THREAD_LOCAL_INIT_FUNCTION_POINTERS"];
             break;
     }
 
-    if (section_64->flags & S_ATTR_PURE_INSTRUCTIONS)
-        [node.details appendRow:
-                            @"":@"":@"80000000":@"S_ATTR_PURE_INSTRUCTIONS"];
-    if (section_64->flags & S_ATTR_NO_TOC)
-        [node.details appendRow:@"":@"":@"40000000":@"S_ATTR_NO_TOC"];
-    if (section_64->flags & S_ATTR_STRIP_STATIC_SYMS)
-        [node.details appendRow:
-                            @"":@"":@"20000000":@"S_ATTR_STRIP_STATIC_SYMS"];
-    if (section_64->flags & S_ATTR_NO_DEAD_STRIP)
-        [node.details appendRow:@"":@"":@"10000000":@"S_ATTR_NO_DEAD_STRIP"];
-    if (section_64->flags & S_ATTR_LIVE_SUPPORT)
-        [node.details appendRow:@"":@"":@"08000000":@"S_ATTR_LIVE_SUPPORT"];
-    if (section_64->flags & S_ATTR_SELF_MODIFYING_CODE)
-        [node.details appendRow:
-                            @"":@"":@"04000000":@"S_ATTR_SELF_MODIFYING_CODE"];
-    if (section_64->flags & S_ATTR_DEBUG)
-        [node.details appendRow:@"":@"":@"02000000":@"S_ATTR_DEBUG"];
-    if (section_64->flags & S_ATTR_SOME_INSTRUCTIONS)
-        [node.details appendRow:
-                            @"":@"":@"00000400":@"S_ATTR_SOME_INSTRUCTIONS"];
-    if (section_64->flags & S_ATTR_EXT_RELOC)
-        [node.details appendRow:@"":@"":@"00000200":@"S_ATTR_EXT_RELOC"];
-    if (section_64->flags & S_ATTR_LOC_RELOC)
-        [node.details appendRow:@"":@"":@"00000100":@"S_ATTR_LOC_RELOC"];
+    if (section_64->flags & S_ATTR_PURE_INSTRUCTIONS) [node.details appendRow:
+                                                       @""                   :@"":@"80000000":@"S_ATTR_PURE_INSTRUCTIONS"];
+    if (section_64->flags & S_ATTR_NO_TOC) [node.details appendRow:@"":@"":@"40000000":@"S_ATTR_NO_TOC"];
+    if (section_64->flags & S_ATTR_STRIP_STATIC_SYMS) [node.details appendRow:
+                                                       @""                   :@"":@"20000000":@"S_ATTR_STRIP_STATIC_SYMS"];
+    if (section_64->flags & S_ATTR_NO_DEAD_STRIP) [node.details appendRow:@"":@"":@"10000000":@"S_ATTR_NO_DEAD_STRIP"];
+    if (section_64->flags & S_ATTR_LIVE_SUPPORT) [node.details appendRow:@"":@"":@"08000000":@"S_ATTR_LIVE_SUPPORT"];
+    if (section_64->flags & S_ATTR_SELF_MODIFYING_CODE) [node.details appendRow:
+                                                         @""                   :@"":@"04000000":@"S_ATTR_SELF_MODIFYING_CODE"];
+    if (section_64->flags & S_ATTR_DEBUG) [node.details appendRow:@"":@"":@"02000000":@"S_ATTR_DEBUG"];
+    if (section_64->flags & S_ATTR_SOME_INSTRUCTIONS) [node.details appendRow:
+                                                       @""                   :@"":@"00000400":@"S_ATTR_SOME_INSTRUCTIONS"];
+    if (section_64->flags & S_ATTR_EXT_RELOC) [node.details appendRow:@"":@"":@"00000200":@"S_ATTR_EXT_RELOC"];
+    if (section_64->flags & S_ATTR_LOC_RELOC) [node.details appendRow:@"":@"":@"00000100":@"S_ATTR_LOC_RELOC"];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location]
@@ -746,15 +702,15 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved3":[NSString stringWithFormat:@"%u", section_64->
-                                                                 reserved3]];
+     ]:lastReadHex:@"Reserved3":[NSString stringWithFormat:@"%u", section_64->
+                                 reserved3]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSymtabNode:(MVNode *)parent
                        caption:(NSString *)caption
-                      location:(uint32_t)location
+                      location:(NSUInteger)location
                 symtab_command:(struct symtab_command const *)symtab_command
 {
     MVNodeSaver nodeSaver;
@@ -768,52 +724,52 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:symtab_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:symtab_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", symtab_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", symtab_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Symbol Table Offset"
-                 :[NSString stringWithFormat:@"%u", symtab_command->symoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Symbol Table Offset"
+              :[NSString stringWithFormat:@"%u", symtab_command->symoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Symbols"
-                 :[NSString stringWithFormat:@"%u", symtab_command->nsyms]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of Symbols"
+              :[NSString stringWithFormat:@"%u", symtab_command->nsyms]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"String Table Offset"
-                 :[NSString stringWithFormat:@"%u", symtab_command->stroff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"String Table Offset"
+              :[NSString stringWithFormat:@"%u", symtab_command->stroff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"String Table Size"
-                 :[NSString stringWithFormat:@"%u", symtab_command->strsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"String Table Size"
+              :[NSString stringWithFormat:@"%u", symtab_command->strsize]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCDysymtabNode:(MVNode *)parent
                          caption:(NSString *)caption
-                        location:(uint32_t)location
+                        location:(NSUInteger)location
                 dysymtab_command:
-                    (struct dysymtab_command const *)dysymtab_command
+    (struct dysymtab_command const *)dysymtab_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -826,136 +782,136 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:dysymtab_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:dysymtab_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"LocSymbol Index"
+     ]:lastReadHex:@"LocSymbol Index"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              ilocalsym]];
+       ilocalsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"LocSymbol Number"
+     ]:lastReadHex:@"LocSymbol Number"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              nlocalsym]];
+       nlocalsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Defined ExtSymbol Index"
+     ]:lastReadHex:@"Defined ExtSymbol Index"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              iextdefsym]];
+       iextdefsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Defined ExtSymbol Number"
+     ]:lastReadHex:@"Defined ExtSymbol Number"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              nextdefsym]];
+       nextdefsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Undef ExtSymbol Index"
+     ]:lastReadHex:@"Undef ExtSymbol Index"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              iundefsym]];
+       iundefsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Undef ExtSymbol Number"
+     ]:lastReadHex:@"Undef ExtSymbol Number"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              nundefsym]];
+       nundefsym]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"TOC Offset"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->tocoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"TOC Offset"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->tocoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"TOC Entries"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->ntoc]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"TOC Entries"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->ntoc]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Module Table Offset"
+     ]:lastReadHex:@"Module Table Offset"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              modtaboff]];
+       modtaboff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Module Table Entries"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->nmodtab]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Module Table Entries"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->nmodtab]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"ExtRef Table Offset"
+     ]:lastReadHex:@"ExtRef Table Offset"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              extrefsymoff]];
+       extrefsymoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"ExtRef Table Entries"
+     ]:lastReadHex:@"ExtRef Table Entries"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              nextrefsyms]];
+       nextrefsyms]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"IndSym Table Offset"
+     ]:lastReadHex:@"IndSym Table Offset"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              indirectsymoff]];
+       indirectsymoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"IndSym Table Entries"
+     ]:lastReadHex:@"IndSym Table Entries"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              nindirectsyms]];
+       nindirectsyms]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"ExtReloc Table Offset"
+     ]:lastReadHex:@"ExtReloc Table Offset"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              extreloff]];
+       extreloff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"ExtReloc Table Entries"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->nextrel]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"ExtReloc Table Entries"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->nextrel]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"LocReloc Table Offset"
+     ]:lastReadHex:@"LocReloc Table Offset"
                            :[NSString stringWithFormat:@"%u", dysymtab_command->
-                                                              locreloff]];
+       locreloff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"LocReloc Table Entries"
-                 :[NSString stringWithFormat:@"%u", dysymtab_command->nlocrel]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"LocReloc Table Entries"
+              :[NSString stringWithFormat:@"%u", dysymtab_command->nlocrel]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCTwolevelHintsNode:(MVNode *)parent
                               caption:(NSString *)caption
-                             location:(uint32_t)location
+                             location:(NSUInteger)location
                twolevel_hints_command:
-                   (struct twolevel_hints_command const *)twolevel_hints_command
+    (struct twolevel_hints_command const *)twolevel_hints_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node =
@@ -969,43 +925,43 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:twolevel_hints_command->
-                                                     cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:twolevel_hints_command->
+                               cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", twolevel_hints_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", twolevel_hints_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Offset":[NSString
-                                stringWithFormat:@"%u", twolevel_hints_command->
-                                                        offset]];
+     ]:lastReadHex:@"Offset":[NSString
+                              stringWithFormat:@"%u", twolevel_hints_command->
+                              offset]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of Hints"
-                 :[NSString
-                      stringWithFormat:@"%u", twolevel_hints_command->nhints]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of Hints"
+              :[NSString
+       stringWithFormat:@"%u", twolevel_hints_command->nhints]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCDylinkerNode:(MVNode *)parent
                          caption:(NSString *)caption
-                        location:(uint32_t)location
+                        location:(NSUInteger)location
                 dylinker_command:
-                    (struct dylinker_command const *)dylinker_command
+    (struct dylinker_command const *)dylinker_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1018,26 +974,26 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:dylinker_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:dylinker_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", dylinker_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", dylinker_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", dylinker_command->name.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString
+       stringWithFormat:@"%u", dylinker_command->name.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1045,16 +1001,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Name":name];
+     ]:lastReadHex:@"Name":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCPrebindChksumNode:(MVNode *)parent
                               caption:(NSString *)caption
-                             location:(uint32_t)location
+                             location:(NSUInteger)location
                 prebind_cksum_command:
-                    (struct prebind_cksum_command const *)prebind_cksum_command
+    (struct prebind_cksum_command const *)prebind_cksum_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1067,34 +1023,34 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self
-                                 getNameForCommand:prebind_cksum_command->cmd]];
+     ]:lastReadHex:@"Command":[self
+                               getNameForCommand:prebind_cksum_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", prebind_cksum_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", prebind_cksum_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Checksum":[NSString stringWithFormat:@"0x%.8X",
-                                                         prebind_cksum_command->
-                                                         cksum]];
+     ]:lastReadHex:@"Checksum":[NSString stringWithFormat:@"0x%.8X",
+                                prebind_cksum_command->
+                                cksum]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCUUIDNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
+                    location:(NSUInteger)location
                 uuid_command:(struct uuid_command const *)uuid_command
 {
     MVNodeSaver nodeSaver;
@@ -1108,40 +1064,40 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:uuid_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:uuid_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", uuid_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", uuid_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_bytes:range length:16 lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"UUID"
-                 :[NSString
-                      stringWithFormat:
-                          @"%@-%@-%@-%@-%@",
-                          [lastReadHex substringWithRange:NSMakeRange(0, 8)],
-                          [lastReadHex substringWithRange:NSMakeRange(8, 4)],
-                          [lastReadHex substringWithRange:NSMakeRange(12, 4)],
-                          [lastReadHex substringWithRange:NSMakeRange(16, 4)],
-                          [lastReadHex
-                              substringWithRange:NSMakeRange(20, 12)]]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"UUID"
+              :[NSString
+       stringWithFormat:
+       @"%@-%@-%@-%@-%@",
+       [lastReadHex substringWithRange:NSMakeRange(0, 8)],
+       [lastReadHex substringWithRange:NSMakeRange(8, 4)],
+       [lastReadHex substringWithRange:NSMakeRange(12, 4)],
+       [lastReadHex substringWithRange:NSMakeRange(16, 4)],
+       [lastReadHex
+        substringWithRange:NSMakeRange(20, 12)]]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCThreadNode:(MVNode *)parent
                        caption:(NSString *)caption
-                      location:(uint32_t)location
+                      location:(NSUInteger)location
                 thread_command:(struct thread_command const *)thread_command
 {
     MVNodeSaver nodeSaver;
@@ -1155,107 +1111,107 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:thread_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:thread_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", thread_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", thread_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     MATCH_STRUCT(mach_header, imageOffset);
     if (mach_header->cputype == CPU_TYPE_I386 ||
         mach_header->cputype == CPU_TYPE_X86_64) {
         MATCH_STRUCT(x86_thread_state, NSMaxRange(range))
 
-            [dataController read_uint32:range lastReadHex:&lastReadHex];
+        [dataController read_uint32: range lastReadHex: &lastReadHex];
         [node.details
-            appendRow:
-                [NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Flavor"
-                     :x86_thread_state->tsh.flavor == x86_THREAD_STATE32
+         appendRow:
+         [NSString stringWithFormat:@"%.8lX", range.location
+         ]        :lastReadHex:@"Flavor"
+                  :x86_thread_state->tsh.flavor == x86_THREAD_STATE32
                     ? @"x86_THREAD_STATE32"
                     : x86_thread_state->tsh.flavor == x86_FLOAT_STATE32
                           ? @"x86_FLOAT_STATE32"
                           : x86_thread_state->tsh.flavor ==
-                                    x86_EXCEPTION_STATE32
+         x86_EXCEPTION_STATE32
                                 ? @"x86_EXCEPTION_STATE32"
                                 : x86_thread_state->tsh.flavor ==
-                                          x86_THREAD_STATE64
+         x86_THREAD_STATE64
                                       ? @"x86_THREAD_STATE64"
                                       : x86_thread_state->tsh.flavor ==
-                                                x86_FLOAT_STATE64
+         x86_FLOAT_STATE64
                                             ? @"x86_FLOAT_STATE64"
                                             : x86_thread_state->tsh.flavor ==
-                                                      x86_EXCEPTION_STATE64
+         x86_EXCEPTION_STATE64
                                                   ? @"x86_EXCEPTION_STATE64"
                                                   : x86_thread_state->tsh
-                                                                .flavor ==
-                                                            x86_THREAD_STATE
+         .flavor ==
+         x86_THREAD_STATE
                                                         ? @"x86_THREAD_STATE"
                                                         : x86_thread_state->tsh
-                                                                      .flavor ==
-                                                                  x86_FLOAT_STATE
+         .flavor ==
+         x86_FLOAT_STATE
                                                               ? @"x86_FLOAT_"
-                                                                @"STATE"
+         @"STATE"
                                                               : x86_thread_state
-                                                                            ->tsh
-                                                                            .flavor ==
-                                                                        x86_EXCEPTION_STATE
+         ->tsh
+         .flavor ==
+         x86_EXCEPTION_STATE
                                                                     ? @"x86_"
-                                                                      @"EXCEPTI"
-                                                                      @"ON_"
-                                                                      @"STATE"
+         @"EXCEPTI"
+         @"ON_"
+         @"STATE"
                                                                     : x86_thread_state
-                                                                                  ->tsh
-                                                                                  .flavor ==
-                                                                              x86_DEBUG_STATE32
+         ->tsh
+         .flavor ==
+         x86_DEBUG_STATE32
                                                                           ? @"x"
-                                                                            @"8"
-                                                                            @"6"
-                                                                            @"_"
-                                                                            @"D"
-                                                                            @"E"
-                                                                            @"B"
-                                                                            @"U"
-                                                                            @"G"
-                                                                            @"_"
-                                                                            @"S"
-                                                                            @"T"
-                                                                            @"A"
-                                                                            @"T"
-                                                                            @"E"
-                                                                            @"3"
-                                                                            @"2"
+         @"8"
+         @"6"
+         @"_"
+         @"D"
+         @"E"
+         @"B"
+         @"U"
+         @"G"
+         @"_"
+         @"S"
+         @"T"
+         @"A"
+         @"T"
+         @"E"
+         @"3"
+         @"2"
                                                                           : x86_thread_state
-                                                                                        ->tsh
-                                                                                        .flavor ==
-                                                                                    x86_DEBUG_STATE64
+         ->tsh
+         .flavor ==
+         x86_DEBUG_STATE64
                                                                                 ? @"x86_DEBUG_STATE64"
                                                                                 : x86_thread_state
-                                                                                              ->tsh
-                                                                                              .flavor ==
-                                                                                          x86_DEBUG_STATE
+         ->tsh
+         .flavor ==
+         x86_DEBUG_STATE
                                                                                       ? @"x86_DEBUG_STATE"
                                                                                       : x86_thread_state
-                                                                                                    ->tsh
-                                                                                                    .flavor ==
-                                                                                                THREAD_STATE_NONE
+         ->tsh
+         .flavor ==
+         THREAD_STATE_NONE
                                                                                             ? @"THREAD_STATE_NONE"
                                                                                             : @"???"];
 
         [dataController read_uint32:range lastReadHex:&lastReadHex];
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Count"
-                     :[NSString
-                          stringWithFormat:@"%u", x86_thread_state->tsh.count]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Count"
+                  :[NSString
+           stringWithFormat:@"%u", x86_thread_state->tsh.count]];
 
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1263,173 +1219,173 @@ using namespace std;
             entryPoint = x86_thread_state->uts.ts32.__eip;
 
             NSDictionary *stateDict = [NSDictionary
-                dictionaryWithObjectsAndKeys:
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__eax],
-                    @"eax",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__ebx],
-                    @"ebx",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__ecx],
-                    @"ecx",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__edx],
-                    @"edx",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__edi],
-                    @"edi",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__esi],
-                    @"esi",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__ebp],
-                    @"ebp",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__esp],
-                    @"esp",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__ss],
-                    @"ss",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__eflags],
-                    @"eflags",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         x86_thread_state->uts.ts32.__eip],
-                    @"eip",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__cs],
-                    @"cs",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__ds],
-                    @"ds",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__es],
-                    @"es",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__fs],
-                    @"fs",
-                    [NSString stringWithFormat:@"%u",
-                                               x86_thread_state->uts.ts32.__gs],
-                    @"gs", nil];
+                                       dictionaryWithObjectsAndKeys:
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__eax],
+                                       @"eax",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__ebx],
+                                       @"ebx",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__ecx],
+                                       @"ecx",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__edx],
+                                       @"edx",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__edi],
+                                       @"edi",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__esi],
+                                       @"esi",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__ebp],
+                                       @"ebp",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__esp],
+                                       @"esp",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__ss],
+                                       @"ss",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__eflags],
+                                       @"eflags",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__eip],
+                                       @"eip",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__cs],
+                                       @"cs",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__ds],
+                                       @"ds",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__es],
+                                       @"es",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__fs],
+                                       @"fs",
+                                       [NSString stringWithFormat:@"%u",
+                                        x86_thread_state->uts.ts32.__gs],
+                                       @"gs", nil];
 
             for (id key in
                  [NSArray arrayWithObjects:@"eax", @"ebx", @"ecx", @"edx",
-                                           @"edi", @"esi", @"ebp", @"esp",
-                                           @"ss", @"eflags", @"eip", @"cs",
-                                           @"ds", @"es", @"fs", @"gs", nil]) {
+                  @"edi", @"esi", @"ebp", @"esp",
+                  @"ss", @"eflags", @"eip", @"cs",
+                  @"ds", @"es", @"fs", @"gs", nil]) {
                 [dataController read_uint32:range lastReadHex:&lastReadHex];
                 [node.details
-                    appendRow:[NSString
-                                  stringWithFormat:@"%.8lX", range.location
-                ]:lastReadHex:key:[stateDict objectForKey:key]];
+                 appendRow:[NSString
+                            stringWithFormat:@"%.8lX", range.location
+                 ]:lastReadHex:key:[stateDict objectForKey:key]];
             }
         } else if (x86_thread_state->tsh.flavor == x86_THREAD_STATE64) {
             entryPoint = x86_thread_state->uts.ts64.__rip;
 
             NSDictionary *stateDict = [NSDictionary
-                dictionaryWithObjectsAndKeys:
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rax],
-                    @"rax",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rbx],
-                    @"rbx",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rcx],
-                    @"rcx",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rdx],
-                    @"rdx",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rdi],
-                    @"rdi",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rsi],
-                    @"rsi",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rbp],
-                    @"rbp",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rsp],
-                    @"rsp",
-                    [NSString stringWithFormat:@"%qu",
-                                               x86_thread_state->uts.ts64.__r8],
-                    @"r8",
-                    [NSString stringWithFormat:@"%qu",
-                                               x86_thread_state->uts.ts64.__r9],
-                    @"r9",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r10],
-                    @"r10",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r11],
-                    @"r11",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r12],
-                    @"r12",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r13],
-                    @"r13",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r14],
-                    @"r14",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__r15],
-                    @"r15",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rip],
-                    @"rip",
-                    [NSString
-                        stringWithFormat:@"%qu",
-                                         x86_thread_state->uts.ts64.__rflags],
-                    @"rflags",
-                    [NSString stringWithFormat:@"%qu",
-                                               x86_thread_state->uts.ts64.__cs],
-                    @"cs",
-                    [NSString stringWithFormat:@"%qu",
-                                               x86_thread_state->uts.ts64.__fs],
-                    @"fs",
-                    [NSString stringWithFormat:@"%qu",
-                                               x86_thread_state->uts.ts64.__gs],
-                    @"gs", nil];
+                                       dictionaryWithObjectsAndKeys:
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rax],
+                                       @"rax",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rbx],
+                                       @"rbx",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rcx],
+                                       @"rcx",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rdx],
+                                       @"rdx",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rdi],
+                                       @"rdi",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rsi],
+                                       @"rsi",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rbp],
+                                       @"rbp",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rsp],
+                                       @"rsp",
+                                       [NSString stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r8],
+                                       @"r8",
+                                       [NSString stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r9],
+                                       @"r9",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r10],
+                                       @"r10",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r11],
+                                       @"r11",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r12],
+                                       @"r12",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r13],
+                                       @"r13",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r14],
+                                       @"r14",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__r15],
+                                       @"r15",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rip],
+                                       @"rip",
+                                       [NSString
+                                        stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__rflags],
+                                       @"rflags",
+                                       [NSString stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__cs],
+                                       @"cs",
+                                       [NSString stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__fs],
+                                       @"fs",
+                                       [NSString stringWithFormat:@"%qu",
+                                        x86_thread_state->uts.ts64.__gs],
+                                       @"gs", nil];
 
             for (id key in [NSArray
-                     arrayWithObjects:@"rax", @"rbx", @"rcx", @"rdx", @"rdi",
-                                      @"rsi", @"rbp", @"rsp", @"r8", @"r9",
-                                      @"r10", @"r11", @"r12", @"r13", @"r14",
-                                      @"r15", @"rip", @"rflags", @"cs", @"fs",
-                                      @"gs", nil]) {
+                            arrayWithObjects:@"rax", @"rbx", @"rcx", @"rdx", @"rdi",
+                            @"rsi", @"rbp", @"rsp", @"r8", @"r9",
+                            @"r10", @"r11", @"r12", @"r13", @"r14",
+                            @"r15", @"rip", @"rflags", @"cs", @"fs",
+                            @"gs", nil]) {
                 [dataController read_uint64:range lastReadHex:&lastReadHex];
                 [node.details
-                    appendRow:[NSString
-                                  stringWithFormat:@"%.8lX", range.location
-                ]:lastReadHex:key:[stateDict objectForKey:key]];
+                 appendRow:[NSString
+                            stringWithFormat:@"%.8lX", range.location
+                 ]:lastReadHex:key:[stateDict objectForKey:key]];
             }
         }
     } else if (mach_header->cputype == CPU_TYPE_ARM) {
@@ -1467,10 +1423,10 @@ using namespace std;
 
         MATCH_STRUCT(arm_thread_state, NSMaxRange(range))
 
-            [dataController read_uint32:range lastReadHex:&lastReadHex];
+        [dataController read_uint32: range lastReadHex: &lastReadHex];
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Flavor":arm_thread_state->flavor == 1
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Flavor":arm_thread_state->flavor == 1
                           ? @"ARM_THREAD_STATE"
                           : arm_thread_state->flavor == 2
                                 ? @"ARM_VFP_STATE"
@@ -1484,10 +1440,10 @@ using namespace std;
 
         [dataController read_uint32:range lastReadHex:&lastReadHex];
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Count"
-                     :[NSString
-                          stringWithFormat:@"%u", arm_thread_state->count]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Count"
+                  :[NSString
+           stringWithFormat:@"%u", arm_thread_state->count]];
 
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1497,72 +1453,72 @@ using namespace std;
             entryPoint = arm_thread_state->uts.ts.__pc;
 
             NSDictionary *stateDict = [NSDictionary
-                dictionaryWithObjectsAndKeys:
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[0]],
-                    @"r0",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[1]],
-                    @"r1",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[2]],
-                    @"r2",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[3]],
-                    @"r3",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[4]],
-                    @"r4",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[5]],
-                    @"r5",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[6]],
-                    @"r6",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[7]],
-                    @"r7",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[8]],
-                    @"r8",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__r[9]],
-                    @"r9",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         arm_thread_state->uts.ts.__r[10]],
-                    @"r10",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         arm_thread_state->uts.ts.__r[11]],
-                    @"r11",
-                    [NSString
-                        stringWithFormat:@"%u",
-                                         arm_thread_state->uts.ts.__r[12]],
-                    @"r12",
-                    [NSString
-                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__sp],
-                    @"sp",
-                    [NSString
-                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__lr],
-                    @"lr",
-                    [NSString
-                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__pc],
-                    @"pc",
-                    [NSString stringWithFormat:@"%u",
-                                               arm_thread_state->uts.ts.__cpsr],
-                    @"cpsr", nil];
+                                       dictionaryWithObjectsAndKeys:
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[0]],
+                                       @"r0",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[1]],
+                                       @"r1",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[2]],
+                                       @"r2",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[3]],
+                                       @"r3",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[4]],
+                                       @"r4",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[5]],
+                                       @"r5",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[6]],
+                                       @"r6",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[7]],
+                                       @"r7",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[8]],
+                                       @"r8",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[9]],
+                                       @"r9",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[10]],
+                                       @"r10",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[11]],
+                                       @"r11",
+                                       [NSString
+                                        stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__r[12]],
+                                       @"r12",
+                                       [NSString
+                                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__sp],
+                                       @"sp",
+                                       [NSString
+                                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__lr],
+                                       @"lr",
+                                       [NSString
+                                        stringWithFormat:@"%u", arm_thread_state->uts.ts.__pc],
+                                       @"pc",
+                                       [NSString stringWithFormat:@"%u",
+                                        arm_thread_state->uts.ts.__cpsr],
+                                       @"cpsr", nil];
 
             for (id key in
                  [NSArray arrayWithObjects:@"r0", @"r1", @"r2", @"r3", @"r4",
-                                           @"r5", @"r6", @"r7", @"r8", @"r9",
-                                           @"r10", @"r11", @"r12", @"sp", @"lr",
-                                           @"pc", @"cpsr", nil]) {
+                  @"r5", @"r6", @"r7", @"r8", @"r9",
+                  @"r10", @"r11", @"r12", @"sp", @"lr",
+                  @"pc", @"cpsr", nil]) {
                 [dataController read_uint32:range lastReadHex:&lastReadHex];
                 [node.details
-                    appendRow:[NSString
-                                  stringWithFormat:@"%.8lX", range.location
-                ]:lastReadHex:key:[stateDict objectForKey:key]];
+                 appendRow:[NSString
+                            stringWithFormat:@"%.8lX", range.location
+                 ]:lastReadHex:key:[stateDict objectForKey:key]];
             }
         } else if (mach_header->cputype == CPU_TYPE_ARM64) {
 #pragma message "TODO: ARM64"
@@ -1575,7 +1531,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCDylibNode:(MVNode *)parent
                       caption:(NSString *)caption
-                     location:(uint32_t)location
+                     location:(NSUInteger)location
                 dylib_command:(struct dylib_command const *)dylib_command
 {
     MVNodeSaver nodeSaver;
@@ -1589,58 +1545,58 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:dylib_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:dylib_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", dylib_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", dylib_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString stringWithFormat:@"%u",
-                                             dylib_command->dylib.name.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString stringWithFormat:@"%u",
+       dylib_command->dylib.name.offset]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     time_t time = (time_t)dylib_command->dylib.timestamp;
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Time Stamp"
+     ]:lastReadHex:@"Time Stamp"
                            :[NSString stringWithFormat:@"%s", ctime(&time)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Current Version"
-                 :[NSString
-                      stringWithFormat:@"%u.%u.%u",
-                                       (dylib_command->dylib.current_version >>
-                                        16),
-                                       ((dylib_command->dylib.current_version >>
-                                         8) &
-                                        0xff),
-                                       (dylib_command->dylib.current_version &
-                                        0xff)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Current Version"
+              :[NSString
+       stringWithFormat:@"%u.%u.%u",
+       (dylib_command->dylib.current_version >>
+        16),
+       ((dylib_command->dylib.current_version >>
+         8) &
+        0xff),
+       (dylib_command->dylib.current_version &
+        0xff)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Compatibility Version"
-                 :[NSString
-                      stringWithFormat:
-                          @"%u.%u.%u",
-                          (dylib_command->dylib.compatibility_version >> 16),
-                          ((dylib_command->dylib.compatibility_version >> 8) &
-                           0xff),
-                          (dylib_command->dylib.compatibility_version & 0xff)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Compatibility Version"
+              :[NSString
+       stringWithFormat:
+       @"%u.%u.%u",
+       (dylib_command->dylib.compatibility_version >> 16),
+       ((dylib_command->dylib.compatibility_version >> 8) &
+        0xff),
+       (dylib_command->dylib.compatibility_version & 0xff)]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1648,16 +1604,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Name":name];
+     ]:lastReadHex:@"Name":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCLinkeditDataNode:(MVNode *)parent
                              caption:(NSString *)caption
-                            location:(uint32_t)location
+                            location:(NSUInteger)location
                linkedit_data_command:
-                   (struct linkedit_data_command const *)linkedit_data_command
+    (struct linkedit_data_command const *)linkedit_data_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1670,44 +1626,44 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self
-                                 getNameForCommand:linkedit_data_command->cmd]];
+     ]:lastReadHex:@"Command":[self
+                               getNameForCommand:linkedit_data_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", linkedit_data_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", linkedit_data_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Data Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", linkedit_data_command->dataoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Data Offset"
+              :[NSString
+       stringWithFormat:@"%u", linkedit_data_command->dataoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Data Size"
-                 :[NSString
-                      stringWithFormat:@"%u", linkedit_data_command->datasize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Data Size"
+              :[NSString
+       stringWithFormat:@"%u", linkedit_data_command->datasize]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCRoutinesNode:(MVNode *)parent
                          caption:(NSString *)caption
-                        location:(uint32_t)location
+                        location:(NSUInteger)location
                 routines_command:
-                    (struct routines_command const *)routines_command
+    (struct routines_command const *)routines_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1720,76 +1676,76 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:routines_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:routines_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", routines_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", routines_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Init Address":[NSString stringWithFormat:@"0x%X",
-                                                             routines_command->
-                                                             init_address]];
+     ]:lastReadHex:@"Init Address":[NSString stringWithFormat:@"0x%X",
+                                    routines_command->
+                                    init_address]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Init Module"
+     ]:lastReadHex:@"Init Module"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              init_module]];
+       init_module]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved1"
+     ]:lastReadHex:@"Reserved1"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved1]];
+       reserved1]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved2"
+     ]:lastReadHex:@"Reserved2"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved2]];
+       reserved2]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved3"
+     ]:lastReadHex:@"Reserved3"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved3]];
+       reserved3]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved4"
+     ]:lastReadHex:@"Reserved4"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved4]];
+       reserved4]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved5"
+     ]:lastReadHex:@"Reserved5"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved5]];
+       reserved5]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved6"
+     ]:lastReadHex:@"Reserved6"
                            :[NSString stringWithFormat:@"%u", routines_command->
-                                                              reserved6]];
+       reserved6]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCRoutines64Node:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
+                          location:(NSUInteger)location
                routines_command_64:
-                   (struct routines_command_64 const *)routines_command_64
+    (struct routines_command_64 const *)routines_command_64
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1802,79 +1758,79 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:routines_command_64->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:routines_command_64->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", routines_command_64->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", routines_command_64->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Init Address"
-                 :[NSString stringWithFormat:@"%qu", routines_command_64->
-                                                     init_address]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Init Address"
+              :[NSString stringWithFormat:@"%qu", routines_command_64->
+       init_address]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Init Module"
-                 :[NSString stringWithFormat:@"%qu",
-                                             routines_command_64->init_module]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Init Module"
+              :[NSString stringWithFormat:@"%qu",
+       routines_command_64->init_module]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved1":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved1]];
+     ]:lastReadHex:@"Reserved1":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved1]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved2":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved2]];
+     ]:lastReadHex:@"Reserved2":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved2]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved3":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved3]];
+     ]:lastReadHex:@"Reserved3":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved3]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved4":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved4]];
+     ]:lastReadHex:@"Reserved4":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved4]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved5":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved5]];
+     ]:lastReadHex:@"Reserved5":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved5]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved6":[NSString stringWithFormat:@"%qu",
-                                                          routines_command_64->
-                                                          reserved6]];
+     ]:lastReadHex:@"Reserved6":[NSString stringWithFormat:@"%qu",
+                                 routines_command_64->
+                                 reserved6]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSubFrameworkNode:(MVNode *)parent
                              caption:(NSString *)caption
-                            location:(uint32_t)location
+                            location:(NSUInteger)location
                sub_framework_command:
-                   (struct sub_framework_command const *)sub_framework_command
+    (struct sub_framework_command const *)sub_framework_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1887,29 +1843,29 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self
-                                 getNameForCommand:sub_framework_command->cmd]];
+     ]:lastReadHex:@"Command":[self
+                               getNameForCommand:sub_framework_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", sub_framework_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", sub_framework_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString
-                      stringWithFormat:@"%u",
-                                       sub_framework_command->umbrella.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString
+       stringWithFormat:@"%u",
+       sub_framework_command->umbrella.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1917,16 +1873,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Umbrella":name];
+     ]:lastReadHex:@"Umbrella":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSubUmbrellaNode:(MVNode *)parent
                             caption:(NSString *)caption
-                           location:(uint32_t)location
+                           location:(NSUInteger)location
                sub_umbrella_command:
-                   (struct sub_umbrella_command const *)sub_umbrella_command
+    (struct sub_umbrella_command const *)sub_umbrella_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1939,28 +1895,28 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command"
+     ]:lastReadHex:@"Command"
                            :[self getNameForCommand:sub_umbrella_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", sub_umbrella_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", sub_umbrella_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString stringWithFormat:@"%u", sub_umbrella_command
-                                                        ->sub_umbrella.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString stringWithFormat:@"%u", sub_umbrella_command
+       ->sub_umbrella.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -1969,16 +1925,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Sub Umbrella":name];
+     ]:lastReadHex:@"Sub Umbrella":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSubClientNode:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
+                         location:(NSUInteger)location
                sub_client_command:
-                   (struct sub_client_command const *)sub_client_command
+    (struct sub_client_command const *)sub_client_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1991,28 +1947,28 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:sub_client_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:sub_client_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", sub_client_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", sub_client_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString
-                      stringWithFormat:@"%u",
-                                       sub_client_command->client.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString
+       stringWithFormat:@"%u",
+       sub_client_command->client.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -2020,16 +1976,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Client":name];
+     ]:lastReadHex:@"Client":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSubLibraryNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
+                          location:(NSUInteger)location
                sub_library_command:
-                   (struct sub_library_command const *)sub_library_command
+    (struct sub_library_command const *)sub_library_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2042,27 +1998,27 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:sub_library_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:sub_library_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", sub_library_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", sub_library_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString stringWithFormat:@"%u", sub_library_command
-                                                        ->sub_library.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString stringWithFormat:@"%u", sub_library_command
+       ->sub_library.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -2070,16 +2026,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Sub Library":name];
+     ]:lastReadHex:@"Sub Library":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCDyldInfoNode:(MVNode *)parent
                          caption:(NSString *)caption
-                        location:(uint32_t)location
+                        location:(NSUInteger)location
                dyld_info_command:
-                   (struct dyld_info_command const *)dyld_info_command
+    (struct dyld_info_command const *)dyld_info_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2092,98 +2048,98 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:dyld_info_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:dyld_info_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size":[NSString stringWithFormat:@"%u",
-                                                             dyld_info_command->
-                                                             cmdsize]];
+     ]:lastReadHex:@"Command Size":[NSString stringWithFormat:@"%u",
+                                    dyld_info_command->
+                                    cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Rebase Info Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->rebase_off]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Rebase Info Offset"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->rebase_off]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Rebase Info Size"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->rebase_size]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Rebase Info Size"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->rebase_size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Binding Info Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->bind_off]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Binding Info Offset"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->bind_off]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Binding Info Size"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->bind_size]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Binding Info Size"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->bind_size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Weak Binding Info Offset"
-                 :[NSString stringWithFormat:@"%u",
-                                             dyld_info_command->weak_bind_off]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Weak Binding Info Offset"
+              :[NSString stringWithFormat:@"%u",
+       dyld_info_command->weak_bind_off]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Weak Binding Info Size"
-                 :[NSString stringWithFormat:@"%u", dyld_info_command->
-                                                    weak_bind_size]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Weak Binding Info Size"
+              :[NSString stringWithFormat:@"%u", dyld_info_command->
+       weak_bind_size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Lazy Binding Info Offset"
-                 :[NSString stringWithFormat:@"%u",
-                                             dyld_info_command->lazy_bind_off]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Lazy Binding Info Offset"
+              :[NSString stringWithFormat:@"%u",
+       dyld_info_command->lazy_bind_off]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Lazy Binding Info Size"
-                 :[NSString stringWithFormat:@"%u", dyld_info_command->
-                                                    lazy_bind_size]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Lazy Binding Info Size"
+              :[NSString stringWithFormat:@"%u", dyld_info_command->
+       lazy_bind_size]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Export Info Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->export_off]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Export Info Offset"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->export_off]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Export Info Size"
-                 :[NSString
-                      stringWithFormat:@"%u", dyld_info_command->export_size]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Export Info Size"
+              :[NSString
+       stringWithFormat:@"%u", dyld_info_command->export_size]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCEncryptionInfoNode:(MVNode *)parent
                                caption:(NSString *)caption
-                              location:(uint32_t)location
+                              location:(NSUInteger)location
                encryption_info_command:(struct encryption_info_command const *)
-                                           encryption_info_command
+    encryption_info_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node =
@@ -2197,52 +2153,52 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:encryption_info_command->
-                                                     cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:encryption_info_command->
+                               cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u",
-                                             encryption_info_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u",
+       encryption_info_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt Offset"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command->
-                                                    cryptoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt Offset"
+              :[NSString stringWithFormat:@"%u", encryption_info_command->
+       cryptoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt Size"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command->
-                                                    cryptsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt Size"
+              :[NSString stringWithFormat:@"%u", encryption_info_command->
+       cryptsize]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt ID"
-                 :[NSString stringWithFormat:@"%u",
-                                             encryption_info_command->cryptid]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt ID"
+              :[NSString stringWithFormat:@"%u",
+       encryption_info_command->cryptid]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCEncryptionInfo64Node:(MVNode *)parent
                                  caption:(NSString *)caption
-                                location:(uint32_t)location
+                                location:(NSUInteger)location
               encryption_info_command_64:
-                  (struct encryption_info_command_64 const *)
-                      encryption_info_command_64
+    (struct encryption_info_command_64 const *)
+    encryption_info_command_64
 {
     MVNodeSaver nodeSaver;
     MVNode *node =
@@ -2256,50 +2212,50 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command"
-                 :[self getNameForCommand:encryption_info_command_64->cmd]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command"
+              :[self getNameForCommand:encryption_info_command_64->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command_64->
-                                                    cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", encryption_info_command_64->
+       cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt Offset"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command_64->
-                                                    cryptoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt Offset"
+              :[NSString stringWithFormat:@"%u", encryption_info_command_64->
+       cryptoff]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt Size"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command_64->
-                                                    cryptsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt Size"
+              :[NSString stringWithFormat:@"%u", encryption_info_command_64->
+       cryptsize]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Crypt ID"
-                 :[NSString stringWithFormat:@"%u", encryption_info_command_64->
-                                                    cryptid]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Crypt ID"
+              :[NSString stringWithFormat:@"%u", encryption_info_command_64->
+       cryptid]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Padding"
-                 :[NSString
-                      stringWithFormat:@"%u", encryption_info_command_64->pad]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Padding"
+              :[NSString
+       stringWithFormat:@"%u", encryption_info_command_64->pad]];
 
     return node;
 }
@@ -2307,7 +2263,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCRPathNode:(MVNode *)parent
                       caption:(NSString *)caption
-                     location:(uint32_t)location
+                     location:(NSUInteger)location
                 rpath_command:(struct rpath_command const *)rpath_command
 {
     MVNodeSaver nodeSaver;
@@ -2321,26 +2277,26 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:rpath_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:rpath_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", rpath_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", rpath_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Str Offset"
-                 :[NSString
-                      stringWithFormat:@"%u", rpath_command->path.offset]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Str Offset"
+              :[NSString
+       stringWithFormat:@"%u", rpath_command->path.offset]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -2348,16 +2304,16 @@ using namespace std;
     NSString *name = [dataController read_string:range
                                      lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Path":name];
+     ]:lastReadHex:@"Path":name];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCVersionMinNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
+                          location:(NSUInteger)location
                version_min_command:
-                   (struct version_min_command const *)version_min_command
+    (struct version_min_command const *)version_min_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2370,46 +2326,46 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:version_min_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:version_min_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", version_min_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", version_min_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Version"
-                 :[NSString
-                      stringWithFormat:@"%u.%u.%u",
-                                       (version_min_command->version >> 16),
-                                       ((version_min_command->version >> 8) &
-                                        0xff),
-                                       (version_min_command->version & 0xff)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Version"
+              :[NSString
+       stringWithFormat:@"%u.%u.%u",
+       (version_min_command->version >> 16),
+       ((version_min_command->version >> 8) &
+        0xff),
+       (version_min_command->version & 0xff)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Reserved"
-                 :[NSString stringWithFormat:@"%u", version_min_command->sdk]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Reserved"
+              :[NSString stringWithFormat:@"%u", version_min_command->sdk]];
     return node;
 }
 
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCMainNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
+                    location:(NSUInteger)location
           entrypoint_command:
-              (struct entry_point_command const *)entry_point_command
+    (struct entry_point_command const *)entry_point_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2422,33 +2378,33 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:entry_point_command->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:entry_point_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", entry_point_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", entry_point_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Entry Offset"
-                 :[NSString
-                      stringWithFormat:@"%qu", entry_point_command->entryoff]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Entry Offset"
+              :[NSString
+       stringWithFormat:@"%qu", entry_point_command->entryoff]];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Stacksize":[NSString stringWithFormat:@"%qu",
-                                                          entry_point_command->
-                                                          stacksize]];
+     ]:lastReadHex:@"Stacksize":[NSString stringWithFormat:@"%qu",
+                                 entry_point_command->
+                                 stacksize]];
     // add an entry with entry point address
     // this is the non-aslr value since we don't its value here
     uint64_t text_vmaddr = 0;
@@ -2475,12 +2431,12 @@ using namespace std;
     }
 
     [node.details appendRow:[NSString stringWithFormat:@"%.8x", 0
-    ]:[NSString stringWithFormat:@"0x%qx",
-                                 text_vmaddr + entry_point_command->entryoff
-    ]:@"Entry Point":[NSString
-                         stringWithFormat:@"0x%qx",
-                                          text_vmaddr + entry_point_command->
-                                                        entryoff]];
+     ]:[NSString stringWithFormat:@"0x%qx",
+        text_vmaddr + entry_point_command->entryoff
+     ]:@"Entry Point":[NSString
+                       stringWithFormat:@"0x%qx",
+                       text_vmaddr + entry_point_command->
+                       entryoff]];
 
     return node;
 }
@@ -2488,9 +2444,9 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCSourceVersionNode:(MVNode *)parent
                               caption:(NSString *)caption
-                             location:(uint32_t)location
+                             location:(NSUInteger)location
                source_version_command:
-                   (struct source_version_command const *)source_version_command
+    (struct source_version_command const *)source_version_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node =
@@ -2504,21 +2460,21 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:source_version_command->
-                                                     cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:source_version_command->
+                               cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", source_version_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", source_version_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     // ripped from otool source code
     uint64_t a, b, c, d, e;
@@ -2528,20 +2484,16 @@ using namespace std;
     c = (source_version_command->version >> 20) & 0x3ff;
     d = (source_version_command->version >> 10) & 0x3ff;
     e = source_version_command->version & 0x3ff;
-    if (e != 0)
-        version = [NSString
-            stringWithFormat:@"%llu.%llu.%llu.%llu.%llu\n", a, b, c, d, e];
-    else if (d != 0)
-        version =
+    if (e != 0) version = [NSString
+                           stringWithFormat:@"%llu.%llu.%llu.%llu.%llu\n", a, b, c, d, e];
+    else if (d != 0) version =
             [NSString stringWithFormat:@"%llu.%llu.%llu.%llu\n", a, b, c, d];
-    else if (c != 0)
-        version = [NSString stringWithFormat:@"%llu.%llu.%llu\n", a, b, c];
-    else
-        version = [NSString stringWithFormat:@"%llu.%llu\n", a, b];
+    else if (c != 0) version = [NSString stringWithFormat:@"%llu.%llu.%llu\n", a, b, c];
+    else version = [NSString stringWithFormat:@"%llu.%llu\n", a, b];
 
     [dataController read_uint64:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Version":version];
+     ]:lastReadHex:@"Version":version];
 
     return node;
 }
@@ -2549,9 +2501,9 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLCLinkerOptionNode:(MVNode *)parent
                              caption:(NSString *)caption
-                            location:(uint32_t)location
+                            location:(NSUInteger)location
                linker_option_command:
-                   (struct linker_option_command const *)linker_option_command
+    (struct linker_option_command const *)linker_option_command
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2564,21 +2516,21 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self
-                                 getNameForCommand:linker_option_command->cmd]];
+     ]:lastReadHex:@"Command":[self
+                               getNameForCommand:linker_option_command->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString
-                      stringWithFormat:@"%u", linker_option_command->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString
+       stringWithFormat:@"%u", linker_option_command->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
 #pragma message "TODO"
     //  void
@@ -2622,9 +2574,9 @@ using namespace std;
 
 - (MVNode *)createLCBuildVersionNode:(MVNode *)parent
                              caption:(NSString *)caption
-                            location:(uint32_t)location
+                            location:(NSUInteger)location
                build_version_command:
-                   (struct build_version_command const *)build_version
+    (struct build_version_command const *)build_version
 {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -2637,19 +2589,19 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:build_version->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:build_version->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
-                 :[NSString stringWithFormat:@"%u", build_version->cmdsize]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Command Size"
+              :[NSString stringWithFormat:@"%u", build_version->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
 
@@ -2698,41 +2650,41 @@ using namespace std;
     }
 
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Platform":platform];
+     ]:lastReadHex:@"Platform":platform];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
 
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Minimum OS Version"
-                 :[NSString
-                      stringWithFormat:@"%u.%u.%u",
-                                       (build_version->minos >> 16),
-                                       ((build_version->minos >> 8) & 0xff),
-                                       (build_version->minos & 0xff)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Minimum OS Version"
+              :[NSString
+       stringWithFormat:@"%u.%u.%u",
+       (build_version->minos >> 16),
+       ((build_version->minos >> 8) & 0xff),
+       (build_version->minos & 0xff)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
 
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"SDK"
-                 :[NSString stringWithFormat:@"%u.%u.%u",
-                                             (build_version->sdk >> 16),
-                                             ((build_version->sdk >> 8) & 0xff),
-                                             (build_version->sdk & 0xff)]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"SDK"
+              :[NSString stringWithFormat:@"%u.%u.%u",
+       (build_version->sdk >> 16),
+       ((build_version->sdk >> 8) & 0xff),
+       (build_version->sdk & 0xff)]];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
 
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Number of tools"
-                 :[NSString stringWithFormat:@"%d", build_version->ntools]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Number of tools"
+              :[NSString stringWithFormat:@"%d", build_version->ntools]];
 
     for (uint32_t i = 0; i != build_version->ntools; i++) {
         struct build_tool_version *tool_vers =
             (struct build_tool_version *)(build_version + 1) + i;
 
-        uint32_t tool_location = location + (uint32_t)((uint64_t)tool_vers -
+        uint64_t tool_location = location + (uint32_t)((uint64_t)tool_vers -
                                                        (uint64_t)build_version);
 
         NSString *tool;
@@ -2754,28 +2706,28 @@ using namespace std;
 
         MVNodeSaver nodeSaver;
         MVNode *toolnode = [node
-            insertChildWithDetails:[NSString
-                                       stringWithFormat:@"Tool (%@)", tool]
-                          location:tool_location
-                            length:sizeof(build_tool_version)
-                             saver:nodeSaver];
+                            insertChildWithDetails:[NSString
+                                                    stringWithFormat:@"Tool (%@)", tool]
+                                          location:tool_location
+                                            length:sizeof(build_tool_version)
+                                             saver:nodeSaver];
 
         [dataController read_uint32:range lastReadHex:&lastReadHex];
 
         [toolnode.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Tool":tool];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Tool":tool];
 
         [dataController read_uint32:range lastReadHex:&lastReadHex];
 
         [toolnode.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Version"
-                     :[NSString
-                          stringWithFormat:@"%u.%u.%u",
-                                           (tool_vers->version >> 16),
-                                           ((tool_vers->version >> 8) & 0xff),
-                                           (tool_vers->version & 0xff)]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Version"
+                  :[NSString
+           stringWithFormat:@"%u.%u.%u",
+           (tool_vers->version >> 16),
+           ((tool_vers->version >> 8) & 0xff),
+           (tool_vers->version & 0xff)]];
     }
 
     return node;
@@ -2783,7 +2735,7 @@ using namespace std;
 
 - (MVNode *)createLCNoteNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
+                    location:(NSUInteger)location
                 note_command:(struct note_command const *)note
 {
     MVNodeSaver nodeSaver;
@@ -2797,25 +2749,25 @@ using namespace std;
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command":[self getNameForCommand:note->cmd]];
+     ]:lastReadHex:@"Command":[self getNameForCommand:note->cmd]];
 
     [node.details
-        setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
+     setAttributes:MVCellColorAttributeName, [NSColor greenColor], nil];
 
     [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Command Size"
+     ]:lastReadHex:@"Command Size"
                            :[NSString stringWithFormat:@"%u", note->cmdsize]];
 
     [node.details setAttributes:MVCellColorAttributeName, [NSColor greenColor],
-                                MVUnderlineAttributeName, @"YES", nil];
+     MVUnderlineAttributeName, @"YES", nil];
 
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Data Owner"
-                 :[NSString
-                      stringWithFormat:@"%s",
-                                       string(note->data_owner, 16).c_str()]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Data Owner"
+              :[NSString
+       stringWithFormat:@"%s",
+       string(note->data_owner, 16).c_str()]];
 
     return node;
 }
@@ -2823,8 +2775,8 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createLoadCommandNode:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
-                           length:(uint32_t)length
+                         location:(NSUInteger)location
+                           length:(NSUInteger)length
                           command:(uint32_t)command
 {
     MVNode *node = nil;
@@ -2833,18 +2785,18 @@ using namespace std;
         case LC_SEGMENT: {
             MATCH_STRUCT(segment_command, location)
             node = [self
-                createLCSegmentNode:parent
-                            caption:[NSString
-                                        stringWithFormat:@"%@ (%s)", caption,
-                                                         string(segment_command
-                                                                    ->segname,
-                                                                16)
-                                                             .c_str()]
-                           location:location
-                    segment_command:segment_command];
+                    createLCSegmentNode:parent
+                                caption:[NSString
+                             stringWithFormat:@"%@ (%s)", caption,
+                                         string(segment_command
+                                                ->segname,
+                                                16)
+                                         .c_str()]
+                               location:location
+                        segment_command:segment_command];
 
             // preserv segment RVA/size for offset lookup
-            segmentInfo[segment_command->fileoff + imageOffset] =
+            segmentInfo[segment_command->fileoff + (uint32_t)imageOffset] =
                 make_pair(segment_command->vmaddr, segment_command->vmsize);
 
             // preserv load segment command info for latter use
@@ -2852,18 +2804,18 @@ using namespace std;
 
             // Section Headers
             for (uint32_t nsect = 0; nsect < segment_command->nsects; ++nsect) {
-                uint32_t sectionloc = location +
-                                      sizeof(struct segment_command) +
-                                      nsect * sizeof(struct section);
+                uint64_t sectionloc = location +
+                    sizeof(struct segment_command) +
+                    nsect * sizeof(struct section);
                 MATCH_STRUCT(section, sectionloc)[self
-                    createSectionNode:node
-                              caption:[NSString
-                                          stringWithFormat:
-                                              @"Section Header (%s)",
-                                              string(section->sectname, 16)
-                                                  .c_str()]
-                             location:sectionloc
-                              section:section];
+ createSectionNode:                               node
+ caption:                                         [NSString
+                      stringWithFormat:
+                                                   @"Section Header (%s)",
+                                                   string(section->sectname, 16)
+                                                   .c_str()]
+ location:                                        sectionloc
+ section:                                         section];
 
                 // preserv section fileOffset/sectName for RVA lookup
                 NSDictionary *userInfo = [self userInfoForSection:section];
@@ -2879,20 +2831,21 @@ using namespace std;
             MATCH_STRUCT(segment_command_64, location)
 
             node = [self
-                createLCSegment64Node:parent
-                              caption:[NSString
-                                          stringWithFormat:
-                                              @"%@ (%s)", caption,
-                                              string(
-                                                  segment_command_64->segname,
-                                                  16)
-                                                  .c_str()]
-                             location:location
-                   segment_command_64:segment_command_64];
+                    createLCSegment64Node:parent
+                                  caption:[NSString
+                             stringWithFormat:
+                                           @"%@ (%s)", caption,
+                                           string(
+                                               segment_command_64->segname,
+                                               16)
+                                           .c_str()]
+                                 location:location
+                       segment_command_64:segment_command_64];
 
             // preserv segment RVA/size for offset lookup
-            segmentInfo[segment_command_64->fileoff + imageOffset] = make_pair(
-                segment_command_64->vmaddr, segment_command_64->vmsize);
+            segmentInfo[(uint32_t)(segment_command_64->fileoff + imageOffset)] =
+                make_pair(segment_command_64->vmaddr,
+                          segment_command_64->vmsize);
 
             // preserv load segment command info for latter use
             segments_64.push_back(segment_command_64);
@@ -2900,18 +2853,18 @@ using namespace std;
             // Section Headers
             for (uint32_t nsect = 0; nsect < segment_command_64->nsects;
                  ++nsect) {
-                uint32_t sectionloc = location +
-                                      sizeof(struct segment_command_64) +
-                                      nsect * sizeof(struct section_64);
+                uint64_t sectionloc = location +
+                    sizeof(struct segment_command_64) +
+                    nsect * sizeof(struct section_64);
                 MATCH_STRUCT(section_64, sectionloc)[self
-                    createSection64Node:node
-                                caption:[NSString
-                                            stringWithFormat:
-                                                @"Section64 Header (%s)",
-                                                string(section_64->sectname, 16)
-                                                    .c_str()]
-                               location:sectionloc
-                             section_64:section_64];
+ createSection64Node:                                node
+ caption:                                            [NSString
+                       stringWithFormat:
+                                                      @"Section64 Header (%s)",
+                                                      string(section_64->sectname, 16)
+                                                      .c_str()]
+ location:                                           sectionloc
+ section_64:                                         section_64];
 
                 // preserv section fileOffset/sectName for RVA lookup
                 NSDictionary *userInfo = [self userInfoForSection64:section_64];
@@ -2937,12 +2890,12 @@ using namespace std;
             for (uint32_t nsym = 0; nsym < symtab_command->nsyms; ++nsym) {
                 if ([self is64bit] == NO) {
                     MATCH_STRUCT(nlist, imageOffset + symtab_command->symoff +
-                                            nsym * sizeof(struct nlist))
+                                 nsym * sizeof(struct nlist))
                     symbols.push_back(nlist);
                 } else { // 64bit
                     MATCH_STRUCT(nlist_64, imageOffset +
-                                               symtab_command->symoff +
-                                               nsym * sizeof(struct nlist_64))
+                                 symtab_command->symoff +
+                                 nsym * sizeof(struct nlist_64))
                     symbols_64.push_back(nlist_64);
                 }
             }
@@ -3014,12 +2967,12 @@ using namespace std;
             NSString *name = [dataController read_string:range];
 
             node = [self
-                createLCDylibNode:parent
-                          caption:[NSString
-                                      stringWithFormat:@"%@ (%@)", caption,
-                                                       [name lastPathComponent]]
-                         location:location
-                    dylib_command:dylib_command];
+                    createLCDylibNode:parent
+                              caption:[NSString
+                             stringWithFormat:@"%@ (%@)", caption,
+                                       [name lastPathComponent]]
+                             location:location
+                        dylib_command:dylib_command];
         } break;
 
         case LC_CODE_SIGNATURE:
@@ -3167,7 +3120,7 @@ using namespace std;
         default:
             [self createDataNode:parent
                          caption:[NSString stringWithFormat:@"%@ (unsupported)",
-                                                            caption]
+                                  caption]
                         location:location
                           length:length];
     } // switch

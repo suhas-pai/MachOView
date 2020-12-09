@@ -46,7 +46,8 @@
         if (mktemp(swapFilePath) == NULL) {
             NSLog(@"mktemp failed!");
             free(swapFilePath);
-            return NO;
+            
+            return nil;
         }
 
         NSString *swapPath = [NSString
@@ -59,7 +60,7 @@
 }
 
 //-----------------------------------------------------------------------------
-- (void const *)imageAt:(uint32_t)location {
+- (void const *)imageAt:(NSInteger)location {
     auto p = (uint8_t const *)[dataController.realData bytes];
     return p ? p + location : NULL;
 }
@@ -115,8 +116,8 @@
 //-----------------------------------------------------------------------------
 - (MVNode *)createDataNode:(MVNode *)parent
                    caption:(NSString *)caption
-                  location:(uint32_t)location
-                    length:(uint32_t)length {
+                  location:(NSInteger)location
+                    length:(NSUInteger)length {
     MVNode *node = [parent insertChild:caption location:location length:length];
     return node;
 }

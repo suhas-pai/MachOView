@@ -305,19 +305,19 @@ struct message_ref64 {
 
 - (MVNode *)createObjCProtocolListNode:(MVNode *)parent
                                caption:(NSString *)caption
-                              location:(uint32_t)location
+                              location:(NSUInteger)location
                              protocols:(struct objc_protocol_list_t const *)
                                            objc_protocol_list_t;
 
 - (MVNode *)createObjC2ProtocolListNode:(MVNode *)parent
                                 caption:(NSString *)caption
-                               location:(uint32_t)location
+                               location:(NSUInteger)location
                               protocols:(struct protocol_list_t const *)
                                             protocol_list_t;
 
 - (MVNode *)createObjC2Protocol64ListNode:(MVNode *)parent
                                   caption:(NSString *)caption
-                                 location:(uint32_t)location
+                                 location:(NSUInteger)location
                                 protocols:(struct protocol64_list_t const *)
                                               protocol64_list_t;
 
@@ -327,7 +327,7 @@ struct message_ref64 {
 @implementation MachOLayout (ObjC)
 
 //------------------------------------------------------------------------------
-- (MVNode *)objcSectionNodeContainsRVA:(uint32_t)rva {
+- (MVNode *)objcSectionNodeContainsRVA:(NSUInteger)rva {
     MVNode *node = [self sectionNodeContainsRVA:rva];
     // segment name must be __OBJC
     return (node && [[node.userInfo objectForKey:@"segname"]
@@ -339,9 +339,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 // returns YES if has already been processed
 //------------------------------------------------------------------------------
-- (MVNode *)entryInSectionNode:(MVNode *)node atLocation:(uint32_t)location {
+- (MVNode *)entryInSectionNode:(MVNode *)node atLocation:(NSUInteger)location {
     NSUInteger childCount = [node numberOfChildren];
-
     for (NSUInteger nchild = 0; nchild < childCount; ++nchild) {
         MVNode *child = [node childAtIndex:nchild];
         if (NSLocationInRange(location, child.dataRange)) {
@@ -357,8 +356,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCCFStringsNode:(MVNode *)parent
                             caption:(NSString *)caption
-                           location:(uint32_t)location
-                             length:(uint32_t)length {
+                           location:(NSUInteger)location
+                             length:(NSUInteger)length {
     struct cfstring_t {
         uint32_t ptr;
         uint32_t data;
@@ -376,7 +375,7 @@ struct message_ref64 {
     NSString *lastReadHex;
 
     while (NSMaxRange(range) < location + length) {
-        MATCH_STRUCT(cfstring_t, NSMaxRange(range))
+        MATCH_STRUCT(cfstring_t, (uint32_t)NSMaxRange(range))
 
         // accumulate search info
         NSUInteger bookmark = node.details.rowCount;
@@ -405,8 +404,8 @@ struct message_ref64 {
                      :[NSString stringWithFormat:@"%u", cfstring_t->size]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -416,8 +415,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCCFStrings64Node:(MVNode *)parent
                               caption:(NSString *)caption
-                             location:(uint32_t)location
-                               length:(uint32_t)length {
+                             location:(NSUInteger)location
+                               length:(NSUInteger)length {
     struct cfstring64_t {
         uint64_t ptr;
         uint64_t data;
@@ -435,7 +434,7 @@ struct message_ref64 {
     NSString *lastReadHex;
 
     while (NSMaxRange(range) < location + length) {
-        MATCH_STRUCT(cfstring64_t, NSMaxRange(range))
+        MATCH_STRUCT(cfstring64_t, (uint32_t)NSMaxRange(range))
 
         // accumulate search info
         NSUInteger bookmark = node.details.rowCount;
@@ -465,8 +464,8 @@ struct message_ref64 {
                      :[NSString stringWithFormat:@"%qu", cfstring64_t->size]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -476,8 +475,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCImageInfoNode:(MVNode *)parent
                             caption:(NSString *)caption
-                           location:(uint32_t)location
-                             length:(uint32_t)length {
+                           location:(NSUInteger)location
+                             length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -511,7 +510,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCVariablesNode:(MVNode *)parent
                             caption:(NSString *)caption
-                           location:(uint32_t)location
+                           location:(NSUInteger)location
                               ivars:(struct objc_ivar_list_t const *)
                                         objc_ivar_list_t {
     // check for parent
@@ -571,8 +570,8 @@ struct message_ref64 {
                                                                   ivar_offset]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -582,7 +581,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCMethodsNode:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
+                         location:(NSUInteger)location
                           methods:(struct objc_method_list_t const *)
                                       objc_method_list_t {
     // check for parent
@@ -654,8 +653,8 @@ struct message_ref64 {
                      :[self findSymbolAtRVA:objc_method_t->method_imp]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                             args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -665,7 +664,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCMethodDescrsNode:(MVNode *)parent
                                caption:(NSString *)caption
-                              location:(uint32_t)location
+                              location:(NSUInteger)location
                           methodDescrs:
                               (struct objc_method_description_list_t const *)
                                   objc_method_description_list_t {
@@ -726,8 +725,8 @@ struct message_ref64 {
                      :[self findSymbolAtRVA:objc_method_description_t->types]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
     return node;
@@ -736,7 +735,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCProtocolNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
+                          location:(NSUInteger)location
                           protocol:
                               (struct objc_protocol_t const *)objc_protocol_t {
     // check for parent
@@ -839,7 +838,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCProtocolListNode:(MVNode *)parent
                                caption:(NSString *)caption
-                              location:(uint32_t)location
+                              location:(NSUInteger)location
                              protocols:(struct objc_protocol_list_t const *)
                                            objc_protocol_list_t {
     // check for parent
@@ -925,7 +924,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCClassNode:(MVNode *)parent
                         caption:(NSString *)caption
-                       location:(uint32_t)location
+                       location:(NSUInteger)location
                       objcClass:(struct objc_class_t const *)objc_class_t {
     // check for parent
     if (parent == nil) {
@@ -1090,7 +1089,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCCategoryNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
+                          location:(NSUInteger)location
                       objcCategory:
                           (struct objc_category_t const *)objc_category_t {
     // check for parent
@@ -1202,7 +1201,7 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCSymtabNode:(MVNode *)parent
                          caption:(NSString *)caption
-                        location:(uint32_t)location
+                        location:(NSUInteger)location
                       objcSymtab:(struct objc_symtab_t const *)objc_symtab_t {
     // check for parent
     if (parent == nil) {
@@ -1292,8 +1291,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCModulesNode:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
-                           length:(uint32_t)length {
+                         location:(NSUInteger)location
+                           length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -1335,10 +1334,10 @@ struct message_ref64 {
         ]:lastReadHex:@"Symtab":[self findSymbolAtRVA:objc_module_t->symtab]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
-        [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
 
+        [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
         MVNode *childNode = nil;
 
         // symbol table
@@ -1361,8 +1360,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCClassExtNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
-                            length:(uint32_t)length {
+                          location:(NSUInteger)location
+                            length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -1416,8 +1415,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjCProtocolExtNode:(MVNode *)parent
                               caption:(NSString *)caption
-                             location:(uint32_t)location
-                               length:(uint32_t)length {
+                             location:(NSUInteger)location
+                               length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -1475,8 +1474,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjC2PointerListNode:(MVNode *)parent
                                caption:(NSString *)caption
-                              location:(uint32_t)location
-                                length:(uint32_t)length
+                              location:(NSUInteger)location
+                                length:(NSUInteger)length
                               pointers:(PointerVector &)pointers {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1508,8 +1507,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjC2Pointer64ListNode:(MVNode *)parent
                                  caption:(NSString *)caption
-                                location:(uint32_t)location
-                                  length:(uint32_t)length
+                                location:(NSUInteger)location
+                                  length:(NSUInteger)length
                                 pointers:(Pointer64Vector &)pointers {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -1541,8 +1540,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjC2MsgRefsNode:(MVNode *)parent
                            caption:(NSString *)caption
-                          location:(uint32_t)location
-                            length:(uint32_t)length {
+                          location:(NSUInteger)location
+                            length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -1572,8 +1571,8 @@ struct message_ref64 {
 
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
     }
 
     return node;
@@ -1582,8 +1581,8 @@ struct message_ref64 {
 //------------------------------------------------------------------------------
 - (MVNode *)createObjC2MsgRefs64Node:(MVNode *)parent
                              caption:(NSString *)caption
-                            location:(uint32_t)location
-                              length:(uint32_t)length {
+                            location:(NSUInteger)location
+                              length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -1613,8 +1612,8 @@ struct message_ref64 {
 
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
     }
 
     return node;
@@ -1690,8 +1689,8 @@ struct message_ref64 {
         ]:lastReadHex:@"Implementation":[self findSymbolAtRVA:method_t->imp]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -1769,8 +1768,8 @@ struct message_ref64 {
                      :[self findSymbolAtRVA64:method64_t->imp]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -1844,8 +1843,8 @@ struct message_ref64 {
                      :[self findSymbolAtRVA:objc_property->attributes]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -1920,8 +1919,8 @@ struct message_ref64 {
                      :[self findSymbolAtRVA64:objc_property64->attributes]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -2448,8 +2447,8 @@ struct message_ref64 {
         ]:lastReadHex:@"Size":[NSString stringWithFormat:@"%u", ivar_t->size]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 
@@ -2538,8 +2537,9 @@ struct message_ref64 {
                      :[NSString stringWithFormat:@"%u", ivar64_t->size]];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
+        
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
     }
 

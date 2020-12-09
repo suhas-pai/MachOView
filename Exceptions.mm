@@ -17,24 +17,24 @@
 
 using namespace std;
 
-#define DW_EH_PE_absptr 0x00
-#define DW_EH_PE_omit 0xff
+#define DW_EH_PE_absptr   0x00
+#define DW_EH_PE_omit     0xff
 
-#define DW_EH_PE_uleb128 0x01
-#define DW_EH_PE_udata2 0x02
-#define DW_EH_PE_udata4 0x03
-#define DW_EH_PE_udata8 0x04
-#define DW_EH_PE_sleb128 0x09
-#define DW_EH_PE_sdata2 0x0A
-#define DW_EH_PE_sdata4 0x0B
-#define DW_EH_PE_sdata8 0x0C
-#define DW_EH_PE_signed 0x08
+#define DW_EH_PE_uleb128  0x01
+#define DW_EH_PE_udata2   0x02
+#define DW_EH_PE_udata4   0x03
+#define DW_EH_PE_udata8   0x04
+#define DW_EH_PE_sleb128  0x09
+#define DW_EH_PE_sdata2   0x0A
+#define DW_EH_PE_sdata4   0x0B
+#define DW_EH_PE_sdata8   0x0C
+#define DW_EH_PE_signed   0x08
 
-#define DW_EH_PE_pcrel 0x10
-#define DW_EH_PE_textrel 0x20
-#define DW_EH_PE_datarel 0x30
-#define DW_EH_PE_funcrel 0x40
-#define DW_EH_PE_aligned 0x50
+#define DW_EH_PE_pcrel    0x10
+#define DW_EH_PE_textrel  0x20
+#define DW_EH_PE_datarel  0x30
+#define DW_EH_PE_funcrel  0x40
+#define DW_EH_PE_aligned  0x50
 
 #define DW_EH_PE_indirect 0x80
 
@@ -44,181 +44,181 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (NSString *)getNameForEncoding:(uint8_t)format {
     switch (format) {
-    case DW_EH_PE_absptr:
-        return @"absolute";
-    case DW_EH_PE_omit:
-        return @"omit";
-    case DW_EH_PE_aligned:
-        return @"aligned absolute";
+        case DW_EH_PE_absptr:
+            return @"absolute";
+        case DW_EH_PE_omit:
+            return @"omit";
+        case DW_EH_PE_aligned:
+            return @"aligned absolute";
 
-    case DW_EH_PE_uleb128:
-        return @"uleb128";
-    case DW_EH_PE_udata2:
-        return @"udata2";
-    case DW_EH_PE_udata4:
-        return @"udata4";
-    case DW_EH_PE_udata8:
-        return @"udata8";
-    case DW_EH_PE_sleb128:
-        return @"sleb128";
-    case DW_EH_PE_sdata2:
-        return @"sdata2";
-    case DW_EH_PE_sdata4:
-        return @"sdata4";
-    case DW_EH_PE_sdata8:
-        return @"sdata8";
+        case DW_EH_PE_uleb128:
+            return @"uleb128";
+        case DW_EH_PE_udata2:
+            return @"udata2";
+        case DW_EH_PE_udata4:
+            return @"udata4";
+        case DW_EH_PE_udata8:
+            return @"udata8";
+        case DW_EH_PE_sleb128:
+            return @"sleb128";
+        case DW_EH_PE_sdata2:
+            return @"sdata2";
+        case DW_EH_PE_sdata4:
+            return @"sdata4";
+        case DW_EH_PE_sdata8:
+            return @"sdata8";
 
-    case DW_EH_PE_absptr | DW_EH_PE_pcrel:
-        return @"pcrel";
-    case DW_EH_PE_uleb128 | DW_EH_PE_pcrel:
-        return @"pcrel uleb128";
-    case DW_EH_PE_udata2 | DW_EH_PE_pcrel:
-        return @"pcrel udata2";
-    case DW_EH_PE_udata4 | DW_EH_PE_pcrel:
-        return @"pcrel udata4";
-    case DW_EH_PE_udata8 | DW_EH_PE_pcrel:
-        return @"pcrel udata8";
-    case DW_EH_PE_sleb128 | DW_EH_PE_pcrel:
-        return @"pcrel sleb128";
-    case DW_EH_PE_sdata2 | DW_EH_PE_pcrel:
-        return @"pcrel sdata2";
-    case DW_EH_PE_sdata4 | DW_EH_PE_pcrel:
-        return @"pcrel sdata4";
-    case DW_EH_PE_sdata8 | DW_EH_PE_pcrel:
-        return @"pcrel sdata8";
+        case DW_EH_PE_absptr | DW_EH_PE_pcrel:
+            return @"pcrel";
+        case DW_EH_PE_uleb128 | DW_EH_PE_pcrel:
+            return @"pcrel uleb128";
+        case DW_EH_PE_udata2 | DW_EH_PE_pcrel:
+            return @"pcrel udata2";
+        case DW_EH_PE_udata4 | DW_EH_PE_pcrel:
+            return @"pcrel udata4";
+        case DW_EH_PE_udata8 | DW_EH_PE_pcrel:
+            return @"pcrel udata8";
+        case DW_EH_PE_sleb128 | DW_EH_PE_pcrel:
+            return @"pcrel sleb128";
+        case DW_EH_PE_sdata2 | DW_EH_PE_pcrel:
+            return @"pcrel sdata2";
+        case DW_EH_PE_sdata4 | DW_EH_PE_pcrel:
+            return @"pcrel sdata4";
+        case DW_EH_PE_sdata8 | DW_EH_PE_pcrel:
+            return @"pcrel sdata8";
 
-    case DW_EH_PE_absptr | DW_EH_PE_textrel:
-        return @"textrel";
-    case DW_EH_PE_uleb128 | DW_EH_PE_textrel:
-        return @"textrel uleb128";
-    case DW_EH_PE_udata2 | DW_EH_PE_textrel:
-        return @"textrel udata2";
-    case DW_EH_PE_udata4 | DW_EH_PE_textrel:
-        return @"textrel udata4";
-    case DW_EH_PE_udata8 | DW_EH_PE_textrel:
-        return @"textrel udata8";
-    case DW_EH_PE_sleb128 | DW_EH_PE_textrel:
-        return @"textrel sleb128";
-    case DW_EH_PE_sdata2 | DW_EH_PE_textrel:
-        return @"textrel sdata2";
-    case DW_EH_PE_sdata4 | DW_EH_PE_textrel:
-        return @"textrel sdata4";
-    case DW_EH_PE_sdata8 | DW_EH_PE_textrel:
-        return @"textrel sdata8";
+        case DW_EH_PE_absptr | DW_EH_PE_textrel:
+            return @"textrel";
+        case DW_EH_PE_uleb128 | DW_EH_PE_textrel:
+            return @"textrel uleb128";
+        case DW_EH_PE_udata2 | DW_EH_PE_textrel:
+            return @"textrel udata2";
+        case DW_EH_PE_udata4 | DW_EH_PE_textrel:
+            return @"textrel udata4";
+        case DW_EH_PE_udata8 | DW_EH_PE_textrel:
+            return @"textrel udata8";
+        case DW_EH_PE_sleb128 | DW_EH_PE_textrel:
+            return @"textrel sleb128";
+        case DW_EH_PE_sdata2 | DW_EH_PE_textrel:
+            return @"textrel sdata2";
+        case DW_EH_PE_sdata4 | DW_EH_PE_textrel:
+            return @"textrel sdata4";
+        case DW_EH_PE_sdata8 | DW_EH_PE_textrel:
+            return @"textrel sdata8";
 
-    case DW_EH_PE_absptr | DW_EH_PE_datarel:
-        return @"datarel";
-    case DW_EH_PE_uleb128 | DW_EH_PE_datarel:
-        return @"datarel uleb128";
-    case DW_EH_PE_udata2 | DW_EH_PE_datarel:
-        return @"datarel udata2";
-    case DW_EH_PE_udata4 | DW_EH_PE_datarel:
-        return @"datarel udata4";
-    case DW_EH_PE_udata8 | DW_EH_PE_datarel:
-        return @"datarel udata8";
-    case DW_EH_PE_sleb128 | DW_EH_PE_datarel:
-        return @"datarel sleb128";
-    case DW_EH_PE_sdata2 | DW_EH_PE_datarel:
-        return @"datarel sdata2";
-    case DW_EH_PE_sdata4 | DW_EH_PE_datarel:
-        return @"datarel sdata4";
-    case DW_EH_PE_sdata8 | DW_EH_PE_datarel:
-        return @"datarel sdata8";
+        case DW_EH_PE_absptr | DW_EH_PE_datarel:
+            return @"datarel";
+        case DW_EH_PE_uleb128 | DW_EH_PE_datarel:
+            return @"datarel uleb128";
+        case DW_EH_PE_udata2 | DW_EH_PE_datarel:
+            return @"datarel udata2";
+        case DW_EH_PE_udata4 | DW_EH_PE_datarel:
+            return @"datarel udata4";
+        case DW_EH_PE_udata8 | DW_EH_PE_datarel:
+            return @"datarel udata8";
+        case DW_EH_PE_sleb128 | DW_EH_PE_datarel:
+            return @"datarel sleb128";
+        case DW_EH_PE_sdata2 | DW_EH_PE_datarel:
+            return @"datarel sdata2";
+        case DW_EH_PE_sdata4 | DW_EH_PE_datarel:
+            return @"datarel sdata4";
+        case DW_EH_PE_sdata8 | DW_EH_PE_datarel:
+            return @"datarel sdata8";
 
-    case DW_EH_PE_absptr | DW_EH_PE_funcrel:
-        return @"funcrel";
-    case DW_EH_PE_uleb128 | DW_EH_PE_funcrel:
-        return @"funcrel uleb128";
-    case DW_EH_PE_udata2 | DW_EH_PE_funcrel:
-        return @"funcrel udata2";
-    case DW_EH_PE_udata4 | DW_EH_PE_funcrel:
-        return @"funcrel udata4";
-    case DW_EH_PE_udata8 | DW_EH_PE_funcrel:
-        return @"funcrel udata8";
-    case DW_EH_PE_sleb128 | DW_EH_PE_funcrel:
-        return @"funcrel sleb128";
-    case DW_EH_PE_sdata2 | DW_EH_PE_funcrel:
-        return @"funcrel sdata2";
-    case DW_EH_PE_sdata4 | DW_EH_PE_funcrel:
-        return @"funcrel sdata4";
-    case DW_EH_PE_sdata8 | DW_EH_PE_funcrel:
-        return @"funcrel sdata8";
+        case DW_EH_PE_absptr | DW_EH_PE_funcrel:
+            return @"funcrel";
+        case DW_EH_PE_uleb128 | DW_EH_PE_funcrel:
+            return @"funcrel uleb128";
+        case DW_EH_PE_udata2 | DW_EH_PE_funcrel:
+            return @"funcrel udata2";
+        case DW_EH_PE_udata4 | DW_EH_PE_funcrel:
+            return @"funcrel udata4";
+        case DW_EH_PE_udata8 | DW_EH_PE_funcrel:
+            return @"funcrel udata8";
+        case DW_EH_PE_sleb128 | DW_EH_PE_funcrel:
+            return @"funcrel sleb128";
+        case DW_EH_PE_sdata2 | DW_EH_PE_funcrel:
+            return @"funcrel sdata2";
+        case DW_EH_PE_sdata4 | DW_EH_PE_funcrel:
+            return @"funcrel sdata4";
+        case DW_EH_PE_sdata8 | DW_EH_PE_funcrel:
+            return @"funcrel sdata8";
 
-    case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_pcrel:
-        return @"indirect pcrel";
-    case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_pcrel:
-        return @"indirect pcrel uleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_pcrel:
-        return @"indirect pcrel udata2";
-    case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_pcrel:
-        return @"indirect pcrel udata4";
-    case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_pcrel:
-        return @"indirect pcrel udata8";
-    case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_pcrel:
-        return @"indirect pcrel sleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_pcrel:
-        return @"indirect pcrel sdata2";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_pcrel:
-        return @"indirect pcrel sdata4";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_pcrel:
-        return @"indirect pcrel sdata8";
+        case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_pcrel:
+            return @"indirect pcrel";
+        case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_pcrel:
+            return @"indirect pcrel uleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_pcrel:
+            return @"indirect pcrel udata2";
+        case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_pcrel:
+            return @"indirect pcrel udata4";
+        case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_pcrel:
+            return @"indirect pcrel udata8";
+        case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_pcrel:
+            return @"indirect pcrel sleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_pcrel:
+            return @"indirect pcrel sdata2";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_pcrel:
+            return @"indirect pcrel sdata4";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_pcrel:
+            return @"indirect pcrel sdata8";
 
-    case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_textrel:
-        return @"indirect textrel";
-    case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_textrel:
-        return @"indirect textrel uleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_textrel:
-        return @"indirect textrel udata2";
-    case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_textrel:
-        return @"indirect textrel udata4";
-    case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_textrel:
-        return @"indirect textrel udata8";
-    case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_textrel:
-        return @"indirect textrel sleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_textrel:
-        return @"indirect textrel sdata2";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_textrel:
-        return @"indirect textrel sdata4";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_textrel:
-        return @"indirect textrel sdata8";
+        case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_textrel:
+            return @"indirect textrel";
+        case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_textrel:
+            return @"indirect textrel uleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_textrel:
+            return @"indirect textrel udata2";
+        case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_textrel:
+            return @"indirect textrel udata4";
+        case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_textrel:
+            return @"indirect textrel udata8";
+        case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_textrel:
+            return @"indirect textrel sleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_textrel:
+            return @"indirect textrel sdata2";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_textrel:
+            return @"indirect textrel sdata4";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_textrel:
+            return @"indirect textrel sdata8";
 
-    case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_datarel:
-        return @"indirect datarel";
-    case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_datarel:
-        return @"indirect datarel uleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_datarel:
-        return @"indirect datarel udata2";
-    case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_datarel:
-        return @"indirect datarel udata4";
-    case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_datarel:
-        return @"indirect datarel udata8";
-    case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_datarel:
-        return @"indirect datarel sleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_datarel:
-        return @"indirect datarel sdata2";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_datarel:
-        return @"indirect datarel sdata4";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_datarel:
-        return @"indirect datarel sdata8";
+        case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_datarel:
+            return @"indirect datarel";
+        case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_datarel:
+            return @"indirect datarel uleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_datarel:
+            return @"indirect datarel udata2";
+        case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_datarel:
+            return @"indirect datarel udata4";
+        case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_datarel:
+            return @"indirect datarel udata8";
+        case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_datarel:
+            return @"indirect datarel sleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_datarel:
+            return @"indirect datarel sdata2";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_datarel:
+            return @"indirect datarel sdata4";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_datarel:
+            return @"indirect datarel sdata8";
 
-    case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_funcrel:
-        return @"indirect funcrel";
-    case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_funcrel:
-        return @"indirect funcrel uleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_funcrel:
-        return @"indirect funcrel udata2";
-    case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_funcrel:
-        return @"indirect funcrel udata4";
-    case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_funcrel:
-        return @"indirect funcrel udata8";
-    case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_funcrel:
-        return @"indirect funcrel sleb128";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_funcrel:
-        return @"indirect funcrel sdata2";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_funcrel:
-        return @"indirect funcrel sdata4";
-    case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_funcrel:
-        return @"indirect funcrel sdata8";
+        case DW_EH_PE_indirect | DW_EH_PE_absptr | DW_EH_PE_funcrel:
+            return @"indirect funcrel";
+        case DW_EH_PE_indirect | DW_EH_PE_uleb128 | DW_EH_PE_funcrel:
+            return @"indirect funcrel uleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_udata2 | DW_EH_PE_funcrel:
+            return @"indirect funcrel udata2";
+        case DW_EH_PE_indirect | DW_EH_PE_udata4 | DW_EH_PE_funcrel:
+            return @"indirect funcrel udata4";
+        case DW_EH_PE_indirect | DW_EH_PE_udata8 | DW_EH_PE_funcrel:
+            return @"indirect funcrel udata8";
+        case DW_EH_PE_indirect | DW_EH_PE_sleb128 | DW_EH_PE_funcrel:
+            return @"indirect funcrel sleb128";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata2 | DW_EH_PE_funcrel:
+            return @"indirect funcrel sdata2";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata4 | DW_EH_PE_funcrel:
+            return @"indirect funcrel sdata4";
+        case DW_EH_PE_indirect | DW_EH_PE_sdata8 | DW_EH_PE_funcrel:
+            return @"indirect funcrel sdata8";
     }
     return @"???";
 }
@@ -250,19 +250,19 @@ using namespace std;
                     ? [dataController read_uint64:range lastReadHex:&hexstr]   \
                     : (format & 0xf) == DW_EH_PE_uleb128                       \
                           ? [dataController read_uleb128:range                 \
-                                             lastReadHex:&hexstr]              \
+                             lastReadHex                :&hexstr]              \
                           : (format & 0xf) == DW_EH_PE_sleb128                 \
                                 ? [dataController read_sleb128:range           \
-                                                   lastReadHex:&hexstr]        \
+                                   lastReadHex                :&hexstr]        \
                                 : ([self is64bit] == NO)                       \
                                       ? [dataController read_uint32:range      \
-                                                        lastReadHex:&hexstr]   \
+                                         lastReadHex               :&hexstr]   \
                                       : [dataController read_uint64:range      \
-                                                        lastReadHex:&hexstr]
+                                         lastReadHex               :&hexstr]
 
 //-----------------------------------------------------------------------------
 - (NSString *)guessSymbolUsingEncoding:(uint8_t)format
-                              atOffset:(uint32_t)offset
+                              atOffset:(NSUInteger)offset
                              withValue:(uint32_t &)value {
     NSParameterAssert([self is64bit] == NO);
 
@@ -284,7 +284,7 @@ using namespace std;
 
 //-----------------------------------------------------------------------------
 - (NSString *)guessSymbol64UsingEncoding:(uint8_t)format
-                                atOffset:(uint32_t)offset
+                                atOffset:(NSInteger)offset
                                withValue:(uint64_t &)value {
     NSParameterAssert([self is64bit] == YES);
 
@@ -314,8 +314,8 @@ using namespace std;
 //-----------------------------------------------------------------------------
 - (MVNode *)createCFINode:(MVNode *)parent
                   caption:(NSString *)caption
-                 location:(uint32_t)location
-                   length:(uint32_t)length {
+                 location:(NSInteger)location
+                   length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -340,7 +340,7 @@ using namespace std;
     uint32_t CIE_length = [dataController read_uint32:range
                                           lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"CIE Length":[NSString stringWithFormat:@"%u", CIE_length]];
+     ]:lastReadHex:@"CIE Length":[NSString stringWithFormat:@"%u", CIE_length]];
 
     // Extended Length (Optional)
     // A 8 byte unsigned value indicating the length in bytes of the CIE
@@ -355,7 +355,7 @@ using namespace std;
                                       lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"CIE ID":[NSString stringWithFormat:@"%u", CIE_ID]];
+     ]:lastReadHex:@"CIE ID":[NSString stringWithFormat:@"%u", CIE_ID]];
 
     // Version (Required)
     // Version assigned to the call frame information structure. This value
@@ -364,7 +364,7 @@ using namespace std;
                                          lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"CIE Version"
+     ]:lastReadHex:@"CIE Version"
                            :[NSString stringWithFormat:@"%u", CIE_version]];
 
     // Augmentation String (Required)
@@ -375,7 +375,7 @@ using namespace std;
                                                     lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Augmentation String":CIE_augmentationStr];
+     ]:lastReadHex:@"Augmentation String":CIE_augmentationStr];
 
     // EH Data present (Optional)
     // On 32 bit architectures, this is a 4 byte value that... On 64 bit
@@ -392,9 +392,9 @@ using namespace std;
                                                     lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Code Alignment Factor"
-                 :[NSString stringWithFormat:@"%qu", CIE_codeAlignFactor]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Code Alignment Factor"
+              :[NSString stringWithFormat:@"%qu", CIE_codeAlignFactor]];
 
     // Data Alignment Factor (Required)
     // A signed LEB128 encoded value that is factored out of all offset
@@ -405,19 +405,19 @@ using namespace std;
                                                    lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Data Alignment Factor"
-                 :[NSString stringWithFormat:@"%qd", CIE_dataAlignFactor]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Data Alignment Factor"
+              :[NSString stringWithFormat:@"%qd", CIE_dataAlignFactor]];
 
     // Return Address Register	(Required)
     uint8_t CIE_returnAddressRegister =
         [dataController read_uint8:range lastReadHex:&lastReadHex];
     CIE_length -= range.length;
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Return Address Register"
-                 :[NSString
-                      stringWithFormat:@"0x%X", CIE_returnAddressRegister]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Return Address Register"
+              :[NSString
+       stringWithFormat:@"0x%X", CIE_returnAddressRegister]];
 
     // A 'z' may be present as the first character of the string. If present,
     // the Augmentation Data field shall be present. The contents of the
@@ -432,10 +432,10 @@ using namespace std;
             [dataController read_uleb128:range lastReadHex:&lastReadHex];
         CIE_length -= range.length;
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Augmentation Length"
-                     :[NSString
-                          stringWithFormat:@"%qu", CIE_augmentationLength]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"Augmentation Length"
+                  :[NSString
+           stringWithFormat:@"%qu", CIE_augmentationLength]];
 
         // Augmentation Data	(Optional)
         // A block of data whose contents are defined by the contents of the
@@ -444,90 +444,88 @@ using namespace std;
         for (NSUInteger strIndex = 1; strIndex < [CIE_augmentationStr length];
              ++strIndex) {
             switch ([CIE_augmentationStr characterAtIndex:strIndex]) {
-            case 'L':
-                // A 'L' may be present at any position after the first
-                // character of the string. This character may only be present
-                // if 'z' is the first character of the string. If present, it
-                // indicates the presence of one argument in the Augmentation
-                // Data of the CIE, and a corresponding argument in the
-                // Augmentation Data of the FDE. The argument in the
-                // Augmentation Data of the CIE is 1-byte and represents the
-                // pointer encoding used for the argument in the Augmentation
-                // Data of the FDE, which is the address of a language-specific
-                // data area (LSDA). The size of the LSDA pointer is specified
-                // by the pointer encoding used.
+                case 'L':
+                    // A 'L' may be present at any position after the first
+                    // character of the string. This character may only be present
+                    // if 'z' is the first character of the string. If present, it
+                    // indicates the presence of one argument in the Augmentation
+                    // Data of the CIE, and a corresponding argument in the
+                    // Augmentation Data of the FDE. The argument in the
+                    // Augmentation Data of the CIE is 1-byte and represents the
+                    // pointer encoding used for the argument in the Augmentation
+                    // Data of the FDE, which is the address of a language-specific
+                    // data area (LSDA). The size of the LSDA pointer is specified
+                    // by the pointer encoding used.
                 {
                     LSDA_encoding = [dataController read_uint8:range
                                                    lastReadHex:&lastReadHex];
                     [node.details
-                        appendRow:[NSString
-                                      stringWithFormat:@"%.8lX", range.location
-                    ]:lastReadHex:@"LSDA Encoding in FDE"
-                                 :[self getNameForEncoding:LSDA_encoding]];
+                     appendRow:[NSString
+                                stringWithFormat:@"%.8lX", range.location
+                     ]:lastReadHex:@"LSDA Encoding in FDE"
+                              :[self getNameForEncoding:LSDA_encoding]];
                 }
                 break;
 
-            case 'P':
-                // A 'P' may be present at any position after the first
-                // character of the string. This character may only be present
-                // if 'z' is the first character of the string. If present, it
-                // indicates the presence of two arguments in the Augmentation
-                // Data of the CIE. The first argument is 1-byte and represents
-                // the pointer encoding used for the second argument, which is
-                // the address of a personality routine handler. The size of the
-                // personality routine pointer is specified by the pointer
-                // encoding used.
+                case 'P':
+                    // A 'P' may be present at any position after the first
+                    // character of the string. This character may only be present
+                    // if 'z' is the first character of the string. If present, it
+                    // indicates the presence of two arguments in the Augmentation
+                    // Data of the CIE. The first argument is 1-byte and represents
+                    // the pointer encoding used for the second argument, which is
+                    // the address of a personality routine handler. The size of the
+                    // personality routine pointer is specified by the pointer
+                    // encoding used.
                 {
                     // personality routine encoding
                     uint8_t PR_encoding =
                         [dataController read_uint8:range
                                        lastReadHex:&lastReadHex];
                     [node.details
-                        appendRow:[NSString
-                                      stringWithFormat:@"%.8lX", range.location
-                    ]:lastReadHex:@"Personality Encoding"
-                                 :[self getNameForEncoding:PR_encoding]];
+                     appendRow:[NSString
+                                stringWithFormat:@"%.8lX", range.location
+                     ]:lastReadHex:@"Personality Encoding"
+                              :[self getNameForEncoding:PR_encoding]];
 
                     uint64_t PR_offset =
                         READ_USE_ENCODING(PR_encoding, range, lastReadHex);
                     [node.details
-                        appendRow:
-                            [NSString stringWithFormat:@"%.8lX", range.location
-                    ]:lastReadHex:@"Personality Routine":[self is64bit] == NO
+                     appendRow:
+                     [NSString stringWithFormat:@"%.8lX", range.location
+                     ]        :lastReadHex:@"Personality Routine":[self is64bit] == NO
                                 ? [self guessSymbolUsingEncoding:PR_encoding
                                                         atOffset:range.location
                                                        withValue:(uint32_t &)
-                                                                     PR_offset]
+                                   PR_offset]
                                 : [self
-                                      guessSymbol64UsingEncoding:PR_encoding
-                                                        atOffset:range.location
-                                                       withValue:PR_offset]];
+                                   guessSymbol64UsingEncoding:PR_encoding
+                                                     atOffset:range.location
+                                                    withValue:PR_offset]];
                 }
                 break;
 
-            case 'R':
-                // A 'R' may be present at any position after the first
-                // character of the string. This character may only be present
-                // if 'z' is the first character of the string. If present, The
-                // Augmentation Data shall include a 1 byte argument that
-                // represents the pointer encoding for the address pointers used
-                // in the FDE.
+                case 'R':
+                    // A 'R' may be present at any position after the first
+                    // character of the string. This character may only be present
+                    // if 'z' is the first character of the string. If present, The
+                    // Augmentation Data shall include a 1 byte argument that
+                    // represents the pointer encoding for the address pointers used
+                    // in the FDE.
                 {
                     Pointer_encoding = [dataController read_uint8:range
                                                       lastReadHex:&lastReadHex];
                     [node.details
-                        appendRow:[NSString
-                                      stringWithFormat:@"%.8lX", range.location
-                    ]:lastReadHex:@"Pointer Encoding in FDE"
-                                 :[self getNameForEncoding:Pointer_encoding]];
+                     appendRow:[NSString
+                                stringWithFormat:@"%.8lX", range.location
+                     ]:lastReadHex:@"Pointer Encoding in FDE"
+                              :[self getNameForEncoding:Pointer_encoding]];
                 }
                 break;
-
             } // switch
         }     // loop
 
         CIE_length -= CIE_augmentationLength;
-
     } // read augmentation data
 
     // Initial Instructions (Required)
@@ -536,7 +534,7 @@ using namespace std;
                         length:CIE_length
                    lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Initial Instructions":@""];
+     ]:lastReadHex:@"Initial Instructions":@""];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -558,9 +556,9 @@ using namespace std;
             uint32_t FDE_length = [dataController read_uint32:range
                                                   lastReadHex:&lastReadHex];
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"FDE Length"
-                         :[NSString stringWithFormat:@"%u", FDE_length]];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"FDE Length"
+                      :[NSString stringWithFormat:@"%u", FDE_length]];
 
             // Extended Length	(Optional)
             // A 8 byte unsigned value indicating the length in bytes of the CIE
@@ -589,8 +587,8 @@ using namespace std;
                 FDE_CIEvalue;
 
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"CIE Pointer":[self is64bit] == NO
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"CIE Pointer":[self is64bit] == NO
                               ? [self findSymbolAtRVA:(uint32_t)FDE_CIEpointer]
                               : [self findSymbolAtRVA64:FDE_CIEpointer]];
 
@@ -601,17 +599,17 @@ using namespace std;
                 READ_USE_ENCODING(Pointer_encoding, range, lastReadHex);
             FDE_length -= range.length;
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"PC Begin":[self is64bit] == NO
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"PC Begin":[self is64bit] == NO
                               ? (symbolName = [self
-                                     guessSymbolUsingEncoding:Pointer_encoding
-                                                     atOffset:range.location
-                                                    withValue:(uint32_t &)
-                                                                  PCBegin_addr])
+                                               guessSymbolUsingEncoding:Pointer_encoding
+                                                               atOffset:range.location
+                                                              withValue:(uint32_t &)
+                                               PCBegin_addr])
                               : (symbolName = [self
-                                     guessSymbol64UsingEncoding:Pointer_encoding
-                                                       atOffset:range.location
-                                                      withValue:PCBegin_addr])];
+                                               guessSymbol64UsingEncoding:Pointer_encoding
+                                                                 atOffset:range.location
+                                                                withValue:PCBegin_addr])];
 
             // PC Range	(Required)
             // An encoded constant that indicates the number of bytes of
@@ -620,9 +618,9 @@ using namespace std;
                 READ_USE_ENCODING(Pointer_encoding, range, lastReadHex);
             FDE_length -= range.length;
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"PC Range"
-                         :[NSString stringWithFormat:@"%qu", FDE_PCRange]];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"PC Range"
+                      :[NSString stringWithFormat:@"%qu", FDE_PCRange]];
 
             if ([CIE_augmentationStr rangeOfString:@"z"].location !=
                 NSNotFound) {
@@ -636,15 +634,14 @@ using namespace std;
                                      lastReadHex:&lastReadHex];
                 FDE_length -= range.length;
                 [node.details
-                    appendRow:[NSString
-                                  stringWithFormat:@"%.8lX", range.location
-                ]:lastReadHex:@"Augmentation Length"
-                             :[NSString
-                                  stringWithFormat:@"%qu",
-                                                   FDE_augmentationLength]];
+                 appendRow:[NSString
+                            stringWithFormat:@"%.8lX", range.location
+                 ]:lastReadHex:@"Augmentation Length"
+                          :[NSString
+                   stringWithFormat:@"%qu",
+                   FDE_augmentationLength]];
 
-                if (FDE_augmentationLength > 0) // LSDA is present
-                {
+                if (FDE_augmentationLength > 0) { // LSDA is present
                     // Augmentation Data	(Optional)
                     // A block of data whose contents are defined by the
                     // contents of the Augmentation String in the associated CIE
@@ -655,17 +652,17 @@ using namespace std;
                         READ_USE_ENCODING(LSDA_encoding, range, lastReadHex);
                     FDE_length -= range.length;
                     [node.details
-                        appendRow:
-                            [NSString stringWithFormat:@"%.8lX", range.location
-                    ]:lastReadHex:@"LSDA":[self is64bit] == NO
+                     appendRow:
+                     [NSString stringWithFormat:@"%.8lX", range.location
+                     ]        :lastReadHex:@"LSDA":[self is64bit] == NO
                                 ? [self guessSymbolUsingEncoding:LSDA_encoding
                                                         atOffset:range.location
                                                        withValue:(uint32_t &)
-                                                                     LSDA_addr]
+                                   LSDA_addr]
                                 : [self
-                                      guessSymbol64UsingEncoding:LSDA_encoding
-                                                        atOffset:range.location
-                                                       withValue:LSDA_addr]];
+                                   guessSymbol64UsingEncoding:LSDA_encoding
+                                                     atOffset:range.location
+                                                    withValue:LSDA_addr]];
 
                     if (LSDA_addr != 0) {
                         lsdaInfo[LSDA_addr] = PCBegin_addr;
@@ -679,12 +676,12 @@ using namespace std;
                                 length:FDE_length
                            lastReadHex:&lastReadHex];
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"Call Frame Instructions":@""];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"Call Frame Instructions":@""];
 
-            [node.details setAttributesFromRowIndex:
-                                           bookmark:MVMetaDataAttributeName,
-                                                    symbolName, nil];
+            [node.details setAttributesFromRowIndex:bookmark
+                                               args:MVMetaDataAttributeName,
+             symbolName, nil];
             [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
         }
 
@@ -729,8 +726,8 @@ using namespace std;
 
 - (MVNode *)createLSDANode:(MVNode *)parent
                    caption:(NSString *)caption
-                  location:(uint32_t)location
-                    length:(uint32_t)length
+                  location:(NSInteger)location
+                    length:(NSUInteger)length
             eh_frame_begin:(uint64_t)eh_frame_begin
 
 {
@@ -747,43 +744,43 @@ using namespace std;
     uint8_t LPStartFormat = [dataController read_uint8:range
                                            lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"@LPStart format":[self getNameForEncoding:LPStartFormat]];
+     ]:lastReadHex:@"@LPStart format":[self getNameForEncoding:LPStartFormat]];
 
     uint8_t typeTableFormat = [dataController read_uint8:range
                                              lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"@TType format":[self getNameForEncoding:typeTableFormat]];
+     ]:lastReadHex:@"@TType format":[self getNameForEncoding:typeTableFormat]];
 
-    uint32_t typeTableBaseLocation = 0;
+    uint64_t typeTableBaseLocation = 0;
     if (typeTableFormat != DW_EH_PE_omit) {
         uint64_t typeTableBaseOffset =
             [dataController read_uleb128:range lastReadHex:&lastReadHex];
         typeTableBaseLocation = NSMaxRange(range) + typeTableBaseOffset;
         [node.details
-            appendRow:
-                [NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"Type Table Base":[self is64bit] == NO
+         appendRow:
+         [NSString stringWithFormat:@"%.8lX", range.location
+         ]        :lastReadHex:@"Type Table Base":[self is64bit] == NO
                     ? [NSString
-                          stringWithFormat:
-                              @"0x%X",
-                              [self fileOffsetToRVA:typeTableBaseLocation]]
+                       stringWithFormat:
+                       @"0x%X",
+                       [self fileOffsetToRVA:typeTableBaseLocation]]
                     : [NSString
-                          stringWithFormat:
-                              @"0x%qX",
-                              [self fileOffsetToRVA64:typeTableBaseLocation]]];
+                       stringWithFormat:
+                       @"0x%qX",
+                       [self fileOffsetToRVA64:typeTableBaseLocation]]];
     }
 
     uint8_t callSiteFormat = [dataController read_uint8:range
                                             lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"call-site format":[self getNameForEncoding:callSiteFormat]];
+     ]:lastReadHex:@"call-site format":[self getNameForEncoding:callSiteFormat]];
 
     uint64_t callSiteTableLength = [dataController read_uleb128:range
                                                     lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"call-site table length"
-                 :[NSString stringWithFormat:@"%qu", callSiteTableLength]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"call-site table length"
+              :[NSString stringWithFormat:@"%qu", callSiteTableLength]];
 
     [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
@@ -797,40 +794,39 @@ using namespace std;
         uint64_t regionStart =
             READ_USE_ENCODING(callSiteFormat, range, lastReadHex);
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"region start"
-                     :[NSString stringWithFormat:@"0x%qX",
-                                                 eh_frame_begin + regionStart]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"region start"
+                  :[NSString stringWithFormat:@"0x%qX",
+           eh_frame_begin + regionStart]];
 
         uint64_t regionLength =
             READ_USE_ENCODING(callSiteFormat, range, lastReadHex);
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"length"
-                     :[NSString stringWithFormat:@"%qu", regionLength]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"length"
+                  :[NSString stringWithFormat:@"%qu", regionLength]];
 
         uint64_t landingPad =
             READ_USE_ENCODING(callSiteFormat, range, lastReadHex);
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"landing pad":landingPad == 0
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"landing pad":landingPad == 0
                           ? @"0x0"
                           : [NSString
-                                stringWithFormat:@"0x%qX",
-                                                 eh_frame_begin + landingPad]];
+                             stringWithFormat:@"0x%qX",
+                             eh_frame_begin + landingPad]];
 
         uint64_t action = [dataController read_uleb128:range
                                            lastReadHex:&lastReadHex];
         [node.details
-            appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-        ]:lastReadHex:@"action":[NSString stringWithFormat:@"%qu", action]];
+         appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+         ]:lastReadHex:@"action":[NSString stringWithFormat:@"%qu", action]];
 
         if (action > 0) {
             actions.insert(action);
         }
 
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
-
     } while (NSMaxRange(range) - location < callSiteTableLength);
 
     //================== Action record table ================
@@ -848,23 +844,23 @@ using namespace std;
                                              lastReadHex:&lastReadHex];
             currentAction += range.length;
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"Type Filter"
-                         :[NSString stringWithFormat:@"%qd", index]];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"Type Filter"
+                      :[NSString stringWithFormat:@"%qd", index]];
 
             if (index > 0) {
-                typeIndexes.insert(index);
+                typeIndexes.insert((int32_t)index);
             } else if (index < 0) {
-                exceptionSpecs.insert(index);
+                exceptionSpecs.insert((int32_t)index);
             }
 
             int64_t nextAction = [dataController read_sleb128:range
                                                   lastReadHex:&lastReadHex];
             currentAction += range.length;
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"Next Action"
-                         :[NSString stringWithFormat:@"%qd", nextAction]];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"Next Action"
+                      :[NSString stringWithFormat:@"%qd", nextAction]];
 
             if (nextAction >= currentAction) {
                 actions.insert(nextAction);
@@ -889,8 +885,8 @@ using namespace std;
             // types specified in the “throw” list. note: they are SLEB128
             // entries
             for (;;) {
-                index = [dataController read_sleb128:range
-                                         lastReadHex:&lastReadHex];
+                index = (int32_t)[dataController read_sleb128:range
+                                                  lastReadHex:&lastReadHex];
                 if (index == 0) {
                     break;
                 }
@@ -917,12 +913,12 @@ using namespace std;
             uint64_t typeInfo =
                 READ_USE_ENCODING(typeTableFormat, range, lastReadHex);
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"Type Info":[self is64bit] == NO
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"Type Info":[self is64bit] == NO
                               ? [self guessSymbolUsingEncoding:typeTableFormat
                                                       atOffset:range.location
                                                      withValue:(uint32_t &)
-                                                                   typeInfo]
+                                 typeInfo]
                               : [self guessSymbol64UsingEncoding:typeTableFormat
                                                         atOffset:range.location
                                                        withValue:typeInfo]];
@@ -936,11 +932,10 @@ using namespace std;
             int64_t index = [dataController read_sleb128:range
                                              lastReadHex:&lastReadHex];
             [node.details
-                appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-            ]:lastReadHex:@"Exception Spec"
-                         :[NSString stringWithFormat:@"%lld", index]];
+             appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+             ]:lastReadHex:@"Exception Spec"
+                      :[NSString stringWithFormat:@"%lld", index]];
         }
-
     } // end of Action Record Table
 
     return node;
@@ -953,8 +948,8 @@ using namespace std;
                                caption:(NSString *)caption
                               location:(uint32_t)location
                                 header:
-                                    (struct unwind_info_section_header const *)
-                                        unwind_info_section_header {
+    (struct unwind_info_section_header const *)
+    unwind_info_section_header {
     MVNodeSaver nodeSaver;
     MVNode *node =
         [parent insertChildWithDetails:caption
@@ -968,7 +963,7 @@ using namespace std;
     uint32_t version = [dataController read_uint32:range
                                        lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Unwind Section Version":version == UNWIND_SECTION_VERSION
+     ]:lastReadHex:@"Unwind Section Version":version == UNWIND_SECTION_VERSION
                                 ? @"UNWIND_SECTION_VERSION"
                                 : [NSString stringWithFormat:@"%u", version]];
 
@@ -978,60 +973,60 @@ using namespace std;
     uint32_t commonEncodingsArraySectionOffset =
         [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:
-            [NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Common Enc Array Sect Offset":[self is64bit] == NO
+     appendRow:
+     [NSString stringWithFormat:@"%.8lX", range.location
+     ]        :lastReadHex:@"Common Enc Array Sect Offset":[self is64bit] == NO
                 ? [self findSymbolAtRVA:[self fileOffsetToRVA:range.location] +
-                                        commonEncodingsArraySectionOffset]
+                   commonEncodingsArraySectionOffset]
                 : [self
-                      findSymbolAtRVA64:[self
-                                            fileOffsetToRVA64:range.location] +
-                                        commonEncodingsArraySectionOffset]];
+                   findSymbolAtRVA64:[self
+                                      fileOffsetToRVA64:range.location] +
+                   commonEncodingsArraySectionOffset]];
 
     uint32_t commonEncodingsArrayCount =
         [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Common Enc Array Count"
-                 :[NSString stringWithFormat:@"%u", commonEncodingsArrayCount]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Common Enc Array Count"
+              :[NSString stringWithFormat:@"%u", commonEncodingsArrayCount]];
 
     uint32_t personalityArraySectionOffset =
         [dataController read_uint32:range lastReadHex:&lastReadHex];
     [node.details
-        appendRow:
-            [NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Personality Array Sect Offset":[self is64bit] == NO
+     appendRow:
+     [NSString stringWithFormat:@"%.8lX", range.location
+     ]        :lastReadHex:@"Personality Array Sect Offset":[self is64bit] == NO
                 ? [self findSymbolAtRVA:[self fileOffsetToRVA:range.location] +
-                                        personalityArraySectionOffset]
+                   personalityArraySectionOffset]
                 : [self
-                      findSymbolAtRVA64:[self
-                                            fileOffsetToRVA64:range.location] +
-                                        personalityArraySectionOffset]];
+                   findSymbolAtRVA64:[self
+                                      fileOffsetToRVA64:range.location] +
+                   personalityArraySectionOffset]];
 
     uint32_t personalityArrayCount = [dataController read_uint32:range
                                                      lastReadHex:&lastReadHex];
     [node.details
-        appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Personality Array Count"
-                 :[NSString stringWithFormat:@"%u", personalityArrayCount]];
+     appendRow:[NSString stringWithFormat:@"%.8lX", range.location
+     ]:lastReadHex:@"Personality Array Count"
+              :[NSString stringWithFormat:@"%u", personalityArrayCount]];
 
     uint32_t indexSectionOffset = [dataController read_uint32:range
                                                   lastReadHex:&lastReadHex];
     [node.details
-        appendRow:
-            [NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Index Section Offset":[self is64bit] == NO
+     appendRow:
+     [NSString stringWithFormat:@"%.8lX", range.location
+     ]        :lastReadHex:@"Index Section Offset":[self is64bit] == NO
                 ? [self findSymbolAtRVA:[self fileOffsetToRVA:range.location] +
-                                        indexSectionOffset]
+                   indexSectionOffset]
                 : [self
-                      findSymbolAtRVA64:[self
-                                            fileOffsetToRVA64:range.location] +
-                                        indexSectionOffset]];
+                   findSymbolAtRVA64:[self
+                                      fileOffsetToRVA64:range.location] +
+                   indexSectionOffset]];
 
     uint32_t indexCount = [dataController read_uint32:range
                                           lastReadHex:&lastReadHex];
     [node.details appendRow:[NSString stringWithFormat:@"%.8lX", range.location
-    ]:lastReadHex:@"Index Count":[NSString stringWithFormat:@"%u", indexCount]];
+     ]:lastReadHex:@"Index Count":[NSString stringWithFormat:@"%u", indexCount]];
 
     return node;
 }

@@ -58,8 +58,8 @@
 
 - (MVNode *)createSignatureNode:(MVNode *)parent
                         caption:(NSString *)caption
-                       location:(uint32_t)location
-                         length:(uint32_t)length {
+                       location:(NSInteger)location
+                         length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -80,8 +80,8 @@
 
 - (MVNode *)createHeaderNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
-                      length:(uint32_t)length {
+                    location:(NSInteger)location
+                      length:(NSUInteger)length {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
                                          location:location
@@ -184,8 +184,8 @@
 
 - (MVNode *)createMemberNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
-                      length:(uint32_t)length
+                    location:(NSInteger)location
+                      length:(NSUInteger)length
                       strtab:(char const *)strtab {
     MVNodeSaver nodeSaver;
     MVNode *node = [parent insertChildWithDetails:caption
@@ -228,8 +228,8 @@
         ]:lastReadHex:@"Object":objectInfo.name];
 
         [node.details
-            setAttributesFromRowIndex:
-                             bookmark:MVMetaDataAttributeName, symbolName, nil];
+            setAttributesFromRowIndex:bookmark
+                                 args:MVMetaDataAttributeName, symbolName, nil];
         [node.details setAttributes:MVUnderlineAttributeName, @"YES", nil];
 
         size -= sizeof(struct ranlib);
@@ -257,12 +257,12 @@
                         length:0]; // length will be determined in function
 
     // skip symbol and string table for now
-    uint32_t symtabOffset = NSMaxRange(symtabHeaderNode.dataRange);
+    NSUInteger symtabOffset = NSMaxRange(symtabHeaderNode.dataRange);
     NSRange range = NSMakeRange(symtabOffset, 0);
     uint32_t symtabSize = [dataController read_uint32:range
                                           lastReadHex:&lastReadHex] +
                           sizeof(uint32_t);
-    uint32_t strtabOffset = symtabOffset + symtabSize;
+    NSUInteger strtabOffset = symtabOffset + symtabSize;
     range = NSMakeRange(strtabOffset, 0);
     uint32_t strtabSize = [dataController read_uint32:range
                                           lastReadHex:&lastReadHex] +
@@ -270,7 +270,7 @@
 
     // read headers
 
-    for (uint32_t location = strtabOffset + strtabSize;
+    for (NSUInteger location = strtabOffset + strtabSize;
          location < NSMaxRange(rootNode.dataRange);) {
         MVNode *headerNode =
             [self createHeaderNode:rootNode
@@ -281,7 +281,7 @@
         MVObjectInfo *objectInfo = [objectInfoMap
             objectForKey:[NSNumber numberWithUnsignedLong:location]];
 
-        uint32_t objectOffset =
+        NSUInteger objectOffset =
             NSMaxRange(headerNode.dataRange); // starts right after the header
         uint32_t objectSize = objectInfo.length;
 

@@ -19,7 +19,7 @@ typedef uint8_t AsmFootPrint[][FOOTPRINT_STRIDE];
 
 @interface MachOLayout (CRTFootPrints)
 
-- (bool)matchAsmAtOffset:(uint32_t)offset
+- (bool)matchAsmAtOffset:(NSUInteger)offset
             asmFootPrint:(const AsmFootPrint)footprint
                lineCount:(NSUInteger)lineCount;
 

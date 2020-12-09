@@ -8,7 +8,8 @@
 
 #import "MachOLayout.h"
 
-@interface DyldHelper : NSObject {
+@interface DyldHelper : NSObject
+{
     NSMutableDictionary *
         externalMap; // external symbol name --> symbols index (negative number)
 }
@@ -24,22 +25,22 @@ enum BindNodeType { NodeTypeBind, NodeTypeWeakBind, NodeTypeLazyBind };
 
 - (MVNode *)createRebaseNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
-                      length:(uint32_t)length
+                    location:(NSInteger)location
+                      length:(NSUInteger)length
                  baseAddress:(uint64_t)baseAddress;
 
 - (MVNode *)createBindingNode:(MVNode *)parent
                       caption:(NSString *)caption
-                     location:(uint32_t)location
-                       length:(uint32_t)length
+                     location:(NSInteger)location
+                       length:(NSUInteger)length
                   baseAddress:(uint64_t)baseAddress
                      nodeType:(BindNodeType)nodeType
                    dyldHelper:(DyldHelper *)helper;
 
 - (MVNode *)createExportNode:(MVNode *)parent
                      caption:(NSString *)caption
-                    location:(uint32_t)location
-                      length:(uint32_t)length
+                    location:(NSInteger)location
+                      length:(NSUInteger)length
                  baseAddress:(uint64_t)baseAddress;
 
 @end

@@ -59,9 +59,9 @@ int64_t nrow_loaded; // number of loaded rows
         NSBundle *bundle =
             [NSBundle bundleWithURL:[runningApplication bundleURL]];
         if ([versionString
-                isEqualToString:[bundle objectForInfoDictionaryKey:
-                                            @"CFBundleShortVersionString"]] ==
-                YES &&
+             isEqualToString:[bundle objectForInfoDictionaryKey:
+                              @"CFBundleShortVersionString"]] ==
+            YES &&
             ++numberOfInstance > 1) {
             return NO;
         }
@@ -78,12 +78,10 @@ int64_t nrow_loaded; // number of loaded rows
     NSAlert *alert = [[NSAlert alloc] init];
 
     [alert setMessageText:@"Insert PID to attack to:"];
-
     [alert addButtonWithTitle:@"Attach"];
     [alert addButtonWithTitle:@"Cancel"];
 
-    NSTextField *input =
-        [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
     [input setStringValue:@""];
     [alert setAccessoryView:input];
     NSInteger button = [alert runModal];
@@ -149,15 +147,11 @@ int64_t nrow_loaded; // number of loaded rows
         /* remove temporary dump file, not required anymore */
         NSFileManager *fileManager = [NSFileManager defaultManager];
         [fileManager
-            removeItemAtPath:[NSString stringWithCString:dumpFilePath
-                                                encoding:NSUTF8StringEncoding]
-                       error:NULL];
+         removeItemAtPath:[NSString stringWithCString:dumpFilePath
+                                             encoding:NSUTF8StringEncoding]
+                    error:NULL];
         free(dumpFilePath);
         free(readbuffer);
-    } else if (button == NSAlertAlternateReturn) {
-        /* nothing to do here */
-    } else {
-        NSAssert1(NO, @"Invalid input dialog button %ld", button);
     }
 }
 
@@ -170,26 +164,25 @@ int64_t nrow_loaded; // number of loaded rows
     [openPanel setCanChooseFiles:YES];
     [openPanel setDelegate:self]; // for filtering files in open panel with
                                   // shouldShowFilename
-    [openPanel beginSheetModalForWindow:nil
+    [openPanel beginSheetModalForWindow:[NSApp mainWindow]
                       completionHandler:^(NSInteger result) {
-                        if (result != NSOKButton) {
-                            return;
-                        }
-                        [openPanel orderOut:self]; // close panel before we
-                                                   // might present an error
-                        for (NSURL *url in [openPanel URLs]) {
-                            [self application:NSApp openFile:[url path]];
-                        }
+                          if (result != NSModalResponseOK) {
+                              return;
+                          }
+                          [openPanel orderOut:self]; // close panel before we
+                                  // might present an error
+                          for (NSURL *url in [openPanel URLs]) {
+                              [self application:NSApp openFile:[url path]];
+                          }
                       }];
 }
 
 //----------------------------------------------------------------------------
-- (BOOL)panel:(id)sender shouldShowFilename:(NSString *)filename {
-    NSURL *url = [NSURL fileURLWithPath:filename];
-
+- (BOOL)panel:(id)sender shouldEnableURL:(NSURL *)url {
     // can enter directories
     NSNumber *isDirectory = nil;
     [url getResourceValue:&isDirectory forKey:NSURLIsDirectoryKey error:NULL];
+
     if ([isDirectory boolValue] == YES) {
         return YES;
     }
@@ -199,14 +192,15 @@ int64_t nrow_loaded; // number of loaded rows
     [url getResourceValue:&isRegularFile
                    forKey:NSURLIsRegularFileKey
                     error:NULL];
+
     if ([isRegularFile boolValue] == NO) {
         return NO;
     }
 
     // check for magic values at front
-    NSFileHandle *fileHandle =
-        [NSFileHandle fileHandleForReadingAtPath:filename];
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:[url path]];
     NSData *magicData = [fileHandle readDataOfLength:8];
+
     [fileHandle closeFile];
 
     if ([magicData length] < sizeof(uint32_t)) {
@@ -236,10 +230,10 @@ int64_t nrow_loaded; // number of loaded rows
 
     // disable the state resume feature, it's not very useful with MachOView
     if ([[NSUserDefaults standardUserDefaults]
-            objectForKey:@"ApplePersistenceIgnoreState"] == nil)
+         objectForKey:@"ApplePersistenceIgnoreState"] == nil)
         [[NSUserDefaults standardUserDefaults]
-            setBool:YES
-             forKey:@"ApplePersistenceIgnoreState"];
+         setBool:YES
+          forKey:@"ApplePersistenceIgnoreState"];
 
     // load user's defaults for preferences
     //  if([[NSUserDefaults standardUserDefaults] objectForKey:
@@ -284,11 +278,11 @@ int64_t nrow_loaded; // number of loaded rows
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"OpenAtLaunch"] !=
         nil) {
         if ([[NSUserDefaults standardUserDefaults]
-                boolForKey:@"OpenAtLaunch"] == YES) {
+             boolForKey:@"OpenAtLaunch"] == YES) {
             // if there is no document yet, then pop up an open file dialogue
             // XXX: irrelevant check, no?
             if ([[[NSDocumentController sharedDocumentController] documents]
-                    count] == 0) {
+                 count] == 0) {
                 [self openDocument:nil];
             }
         }
@@ -312,20 +306,16 @@ int64_t nrow_loaded; // number of loaded rows
            openFile:(NSString *)filename {
     NSLog(@"open file: %@", filename);
 
-    __autoreleasing NSError *error;
-
     NSDocumentController *documentController =
         [NSDocumentController sharedDocumentController];
-    MVDocument *document = [documentController
-        openDocumentWithContentsOfURL:[NSURL fileURLWithPath:filename]
-                              display:YES
-                                error:&error];
+    MVDocument *__block returnedDcument = nil;
 
-    // If we can't open the document, present error to the user
-    if (!document) {
-        [NSApp presentError:error];
-        return NO;
-    }
+    [documentController
+     openDocumentWithContentsOfURL:[NSURL fileURLWithPath:filename]
+                           display:YES
+                 completionHandler:^(NSDocument *_Nullable document, BOOL documentWasAlreadyOpen, NSError *_Nullable error) {
+                     returnedDcument = (MVDocument *)document;
+                 }];
 
     return YES;
 }

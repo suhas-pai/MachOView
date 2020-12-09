@@ -6,6 +6,7 @@
  *
  */
 
+#include <atomic>
 #include <cxxabi.h>
 #include <map>
 #include <set>
@@ -63,23 +64,23 @@
     for (NSUInteger rowIndex = rowRange.location;
          rowIndex < NSMaxRange(rowRange); rowIndex++) {
         MVRow *row = [document.dataController.selectedNode.details
-            getRowToDisplay:rowIndex];
+                      getRowToDisplay:rowIndex];
         if (row == nil) {
             continue;
         }
 
         if ([[row.attributes objectForKey:MVUnderlineAttributeName]
-                isEqualToString:@"YES"]) {
+             isEqualToString:@"YES"]) {
             NSRect rowRect = [self rectOfRow:rowIndex];
 
             [NSBezierPath
-                strokeLineFromPoint:NSMakePoint(rowRect.origin.x,
-                                                -0.5 + rowRect.origin.y +
-                                                    rowRect.size.height)
-                            toPoint:NSMakePoint(rowRect.origin.x +
-                                                    rowRect.size.width,
-                                                -0.5 + rowRect.origin.y +
-                                                    rowRect.size.height)];
+             strokeLineFromPoint:NSMakePoint(rowRect.origin.x,
+                                             -0.5 + rowRect.origin.y +
+                                             rowRect.size.height)
+                         toPoint:NSMakePoint(rowRect.origin.x +
+                                             rowRect.size.width,
+                                             -0.5 + rowRect.origin.y +
+                                             rowRect.size.height)];
         }
     }
     //[super drawGridInClipRect:clipRect];
@@ -94,7 +95,7 @@
     for (NSUInteger rowIndex = rowRange.location;
          rowIndex < NSMaxRange(rowRange); rowIndex++) {
         MVRow *row = [document.dataController.selectedNode.details
-            getRowToDisplay:rowIndex];
+                      getRowToDisplay:rowIndex];
         if (row == nil) {
             continue;
         }
@@ -102,7 +103,7 @@
         NSColor *color = [row.attributes objectForKey:MVCellColorAttributeName];
         if (color != nil) {
             NSColor *bgcolor = [[NSColor controlAlternatingRowBackgroundColors]
-                objectAtIndex:rowIndex % 2];
+                                objectAtIndex:rowIndex % 2];
 
             [[color blendedColorWithFraction:0.85f ofColor:bgcolor] setFill];
 
@@ -202,12 +203,11 @@
         NSUInteger numZeroes = length - [string length];
         NSMutableString *zeroes =
             [[NSMutableString alloc] initWithCapacity:numZeroes];
-        while (numZeroes-- > 0) {
+        while (numZeroes-- > 0)
             [zeroes appendString:@"0"];
-        }
         (*anObject) =
             [NSString stringWithFormat:@"%@%@", alignLeft ? string : zeroes,
-                                       alignLeft ? zeroes : string];
+             alignLeft ? zeroes : string];
     }
 
     return YES;
@@ -216,7 +216,7 @@
 //----------------------------------------------------------------------------
 - (NSAttributedString *)attributedStringForObjectValue:(id)anObject
                                  withDefaultAttributes:
-                                     (NSDictionary *)attributes {
+    (NSDictionary *)attributes {
     if ([anObject isKindOfClass:[NSAttributedString class]]) {
         return anObject;
     }
@@ -231,11 +231,10 @@
             errorDescription:(NSString **)error {
     NSScanner *scanner = [NSScanner scannerWithString:*partialStringPtr];
 
-    if (compound)
-    // option 1: formatted hex value (11 22 33 44 55 66 77 88 )
-    {
+    if (compound) {
+        // option 1: formatted hex value (11 22 33 44 55 66 77 88 )
         [scanner
-            setCharactersToBeSkipped:[NSCharacterSet whitespaceCharacterSet]];
+         setCharactersToBeSkipped:[NSCharacterSet whitespaceCharacterSet]];
 
         NSUInteger numBytes = length;
         while ([scanner isAtEnd] == NO) {
@@ -249,14 +248,12 @@
 
             --numBytes;
         }
-
-    } else
-    // option 2: plain hex value
-    {
+    } else {
+        // option 2: plain hex value
         [scanner setCharactersToBeSkipped:nil];
 
         NSCharacterSet *characterSet = [NSCharacterSet
-            characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
+                                        characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
         while ([scanner isAtEnd] == NO) {
             // must be a valid hex value
             if ([scanner scanCharactersFromSet:characterSet
@@ -294,10 +291,10 @@ enum ViewType {
     NSBundle *mainBundle = [NSBundle mainBundle];
 
     NSString *swapDir = [NSString
-        stringWithFormat:@"%@%@_%@.XXXXXXXXXXX", NSTemporaryDirectory(),
+                         stringWithFormat:@"%@%@_%@.XXXXXXXXXXX", NSTemporaryDirectory(),
                          [procInfo processName],
                          [mainBundle objectForInfoDictionaryKey:
-                                         @"CFBundleShortVersionString"]];
+                          @"CFBundleShortVersionString"]];
 
     return swapDir;
 }
@@ -371,26 +368,27 @@ enum ViewType {
 - (void)handleDataTreeChanged:(NSNotification *)notification {
     if ([notification object] == dataController) {
         dispatch_async(dispatch_get_main_queue(), ^{
-          // Update UI here, on the main queue
-          NSDictionary *userInfo = [notification userInfo];
-          if (userInfo) {
-              // refresh the modified node only
-              MVNode *node = [userInfo objectForKey:MVNodeUserInfoKey];
+            // Update UI here, on the main queue
+            NSDictionary *userInfo = [notification userInfo];
+            if (userInfo) {
+                // refresh the modified node only
+                MVNode *node = [userInfo objectForKey:MVNodeUserInfoKey];
 
-              // check if the window still exists which contains the leftView to
-              // update
-              if ([[self windowControllers] count] == 0) {
-                  return;
-              }
+                // check if the window still exists which contains the leftView to
+                // update
+                if ([[self windowControllers] count] == 0) {
+                    return;
+                }
 
-              [leftView reloadItem:node.parent];
+                [self->leftView reloadItem:node.parent];
 
-              if ([leftView isItemExpanded:node.parent]) {
-                  [leftView reloadItem:node];
-              }
-          } else {
-              [leftView reloadItem:dataController.rootNode reloadChildren:YES];
-          }
+                if ([self->leftView isItemExpanded:node.parent]) {
+                    [self->leftView reloadItem:node];
+                }
+            } else {
+                [self->leftView reloadItem:self->dataController.rootNode
+                            reloadChildren:YES];
+            }
         });
     }
 }
@@ -409,21 +407,21 @@ enum ViewType {
         NSString *threadState =
             [[notification userInfo] objectForKey:MVStatusUserInfoKey];
         if ([threadState isEqualToString:MVStatusTaskStarted] == YES) {
-            if (OSAtomicIncrement32(&threadCount) == 1) {
+            if (atomic_fetch_add_explicit(&threadCount, 1, std::memory_order_relaxed) == 1) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                  [self->progressIndicator setUsesThreadedAnimation:YES];
-                  [self->progressIndicator startAnimation:nil];
-                  [self->stopButton setHidden:NO];
+                    [self->progressIndicator setUsesThreadedAnimation:YES];
+                    [self->progressIndicator startAnimation:nil];
+                    [self->stopButton setHidden:NO];
                 });
             }
         } else if ([threadState isEqualToString:MVStatusTaskTerminated] ==
                    YES) {
-            if (OSAtomicDecrement32(&threadCount) == 0) {
+            if (atomic_fetch_add_explicit(&threadCount, -1, std::memory_order_relaxed) == 0) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                  [self->progressIndicator stopAnimation:nil];
-                  [self->statusText setStringValue:@""];
+                    [self->progressIndicator stopAnimation:nil];
+                    [self->statusText setStringValue:@""];
 
-                  [self->stopButton setHidden:YES];
+                    [self->stopButton setHidden:YES];
                 });
             }
         }
@@ -486,16 +484,14 @@ enum ViewType {
     [[NSFileManager defaultManager] copyItemAtURL:absoluteURL
                                             toURL:tmpURL
                                             error:outError];
-    if (*outError)
-        return NO;
+    if (*outError) return NO;
 
     // open the copied binary for patching
     dataController.realData =
         [NSMutableData dataWithContentsOfURL:tmpURL
                                      options:NSDataReadingMappedAlways
                                        error:outError];
-    if (*outError)
-        return NO;
+    if (*outError) return NO;
 
     // open the original binary for viewing/editing
     dataController.fileName = [absoluteURL path];
@@ -503,8 +499,7 @@ enum ViewType {
         [NSMutableData dataWithContentsOfURL:absoluteURL
                                      options:NSDataReadingMappedIfSafe
                                        error:outError];
-    if (*outError)
-        return NO;
+    if (*outError) return NO;
 
     @try {
         [dataController createLayouts:dataController.rootNode
@@ -512,13 +507,13 @@ enum ViewType {
                                length:[dataController.fileData length]];
     } @catch (NSException *exception) {
         *outError = [NSError
-            errorWithDomain:NSCocoaErrorDomain
-                       code:NSFileReadUnknownError
-                   userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                                              [[self fileURL] path],
-                                              NSFilePathErrorKey,
-                                              [exception reason],
-                                              NSLocalizedDescriptionKey, nil]];
+                     errorWithDomain:NSCocoaErrorDomain
+                                code:NSFileReadUnknownError
+                            userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                                      [[self fileURL] path],
+                                      NSFilePathErrorKey,
+                                      [exception reason],
+                                      NSLocalizedDescriptionKey, nil]];
         return NO;
     }
 
@@ -612,35 +607,35 @@ enum ViewType {
     NSTableColumn *column3 = [[rightView tableColumns] objectAtIndex:3];
 
     switch (viewType) {
-    case e_details:
-    case e_details64:
-        [[column0 headerCell]
-            setStringValue:[self isRVA] == NO ? @"Offset" : @"Address"];
-        [[column1 headerCell] setStringValue:@"Data"];
-        [[column2 headerCell] setStringValue:@"Description"];
-        [[column3 headerCell] setStringValue:@"Value"];
+        case e_details:
+        case e_details64:
+            [[column0 headerCell]
+             setStringValue:[self isRVA] == NO ? @"Offset" : @"Address"];
+            [[column1 headerCell] setStringValue:@"Data"];
+            [[column2 headerCell] setStringValue:@"Description"];
+            [[column3 headerCell] setStringValue:@"Value"];
 
-        [column0 setEditable:NO];
-        [column1 setEditable:YES];
-        [column2 setEditable:NO];
-        [column3 setEditable:NO];
-        break;
+            [column0 setEditable:NO];
+            [column1 setEditable:YES];
+            [column2 setEditable:NO];
+            [column3 setEditable:NO];
+            break;
 
-    case e_hex:
-    case e_hex64:
-        [[column0 headerCell]
-            setStringValue:[self isRVA] == NO ? @"pFile" : @"Address"];
-        [[column1 headerCell] setStringValue:@"Data LO"];
-        [[column2 headerCell] setStringValue:@"Data HI"];
-        [[column3 headerCell] setStringValue:@"Value"];
+        case e_hex:
+        case e_hex64:
+            [[column0 headerCell]
+             setStringValue:[self isRVA] == NO ? @"pFile" : @"Address"];
+            [[column1 headerCell] setStringValue:@"Data LO"];
+            [[column2 headerCell] setStringValue:@"Data HI"];
+            [[column3 headerCell] setStringValue:@"Value"];
 
-        [column0 setEditable:NO];
-        [column1 setEditable:YES];
-        [column2 setEditable:YES];
-        [column3 setEditable:NO];
-        break;
+            [column0 setEditable:NO];
+            [column1 setEditable:YES];
+            [column2 setEditable:YES];
+            [column3 setEditable:NO];
+            break;
 
-    default:; // do not change current view
+        default:; // do not change current view
     }
 }
 
@@ -704,7 +699,7 @@ enum ViewType {
 //----------------------------------------------------------------------------
 // set up the formatter for editable cells
 //----------------------------------------------------------------------------
-- (void)tableView:(NSTableView *)aTableView
+- (void)  tableView:(NSTableView *)aTableView
     willDisplayCell:(id)aCell
      forTableColumn:(NSTableColumn *)aTableColumn
                 row:(NSInteger)rowIndex {
@@ -720,25 +715,25 @@ enum ViewType {
 
             [aCell setFormatter:len > 16
                                     ? [MVRightFormatter
-                                          leftAlignedFormatterWithLength:len]
+                                       leftAlignedFormatterWithLength:len]
                                     : [MVRightFormatter
-                                          plainFormatterWithLength:len]];
+                                       plainFormatterWithLength:len]];
         } else {
             NSUInteger colIndex =
                 [[aTableView tableColumns] indexOfObject:aTableColumn];
             NSUInteger len = MIN(dataController.selectedNode.dataRange.length -
-                                     rowIndex * 16,
+                                 rowIndex * 16,
                                  (NSUInteger)16);
 
             if (colIndex == DATA_LO_COLUMN) {
                 [aCell setFormatter:[MVRightFormatter
-                                        compoundFormatterWithLength:len > 8
+                                     compoundFormatterWithLength:len > 8
                                                                         ? 8
                                                                         : len]];
             } else if (colIndex == DATA_HI_COLUMN) {
                 [aCell
-                    setFormatter:[MVRightFormatter
-                                     compoundFormatterWithLength:len > 8
+                 setFormatter:[MVRightFormatter
+                               compoundFormatterWithLength:len > 8
                                                                      ? len - 8
                                                                      : 0]];
             }
@@ -776,13 +771,13 @@ enum ViewType {
 
         NSUInteger stop =
             [cellContent
-                rangeOfCharacterFromSet:
-                    [NSCharacterSet characterSetWithCharactersInString:@")]"]
-                                options:NSLiteralSearch
-                                  range:NSMakeRange(start,
-                                                    [cellContent length] -
-                                                        start)]
-                .location;
+             rangeOfCharacterFromSet:
+             [NSCharacterSet characterSetWithCharactersInString:@")]"]
+                             options:NSLiteralSearch
+                               range:NSMakeRange(start,
+                                                 [cellContent length] -
+                                                 start)]
+            .location;
         if (stop == NSNotFound) {
             stop = [cellContent length];
         }

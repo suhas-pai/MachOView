@@ -133,14 +133,14 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 //-----------------------------------------------------------------------------
 - (NSString *)coloumnAtIndex:(NSUInteger)index {
     switch (index) {
-    case OFFSET_COLUMN:
-        return coloumns.offsetStr;
-    case DATA_COLUMN:
-        return coloumns.dataStr;
-    case DESCRIPTION_COLUMN:
-        return coloumns.descriptionStr;
-    case VALUE_COLUMN:
-        return coloumns.valueStr;
+        case OFFSET_COLUMN:
+            return coloumns.offsetStr;
+        case DATA_COLUMN:
+            return coloumns.dataStr;
+        case DESCRIPTION_COLUMN:
+            return coloumns.descriptionStr;
+        case VALUE_COLUMN:
+            return coloumns.valueStr;
     }
     return nil;
 }
@@ -150,18 +150,18 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     coloumnsOffset = 0;
 
     switch (index) {
-    case OFFSET_COLUMN:
-        coloumns.offsetStr = str;
-        break;
-    case DATA_COLUMN:
-        coloumns.dataStr = str;
-        break;
-    case DESCRIPTION_COLUMN:
-        coloumns.descriptionStr = str;
-        break;
-    case VALUE_COLUMN:
-        coloumns.valueStr = str;
-        break;
+        case OFFSET_COLUMN:
+            coloumns.offsetStr = str;
+            break;
+        case DATA_COLUMN:
+            coloumns.dataStr = str;
+            break;
+        case DESCRIPTION_COLUMN:
+            coloumns.descriptionStr = str;
+            break;
+        case VALUE_COLUMN:
+            coloumns.valueStr = str;
+            break;
     }
 }
 
@@ -175,10 +175,8 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     std::string s;
     for (;;) {
         char c = fgetc(pFile);
-        if (!feof(pFile) && c)
-            s += c;
-        else
-            break;
+        if (!feof(pFile) && c) s += c;
+        else break;
     }
     return NSSTRING(s.c_str());
 }
@@ -199,41 +197,41 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
                                     : [color isEqualTo:[NSColor redColor]]
                                           ? MVRedColorOrdinal
                                           : [color
-                                                isEqualTo:[NSColor greenColor]]
+                                             isEqualTo:[NSColor greenColor]]
                                                 ? MVGreenColorOrdinal
                                                 : [color
-                                                      isEqualTo:[NSColor
-                                                                    blueColor]]
+                                                   isEqualTo:[NSColor
+                                                              blueColor]]
                                                       ? MVBlueColorOrdinal
                                                       : [color
-                                                            isEqualTo:
-                                                                [NSColor
-                                                                    cyanColor]]
+                                                         isEqualTo:
+                                                         [NSColor
+                                                          cyanColor]]
                                                             ? MVCyanColorOrdinal
                                                             : [color
-                                                                  isEqualTo:
-                                                                      [NSColor
-                                                                          yellowColor]]
+                                                               isEqualTo:
+                                                               [NSColor
+                                                                yellowColor]]
                                                                   ? MVYellowColorOrdinal
                                                                   : [color
-                                                                        isEqualTo:
-                                                                            [NSColor
-                                                                                magentaColor]]
+                                                                     isEqualTo:
+                                                                     [NSColor
+                                                                      magentaColor]]
                                                                         ? MVMagentaColorOrdinal
                                                                         : [color
-                                                                              isEqualTo:
-                                                                                  [NSColor
-                                                                                      orangeColor]]
+                                                                           isEqualTo:
+                                                                           [NSColor
+                                                                            orangeColor]]
                                                                               ? MVOrangeColorOrdinal
                                                                               : [color
-                                                                                    isEqualTo:
-                                                                                        [NSColor
-                                                                                            purpleColor]]
+                                                                                 isEqualTo:
+                                                                                 [NSColor
+                                                                                  purpleColor]]
                                                                                     ? MVPurpleColorOrdinal
                                                                                     : [color
-                                                                                          isEqualTo:
-                                                                                              [NSColor
-                                                                                                  brownColor]]
+                                                                                       isEqualTo:
+                                                                                       [NSColor
+                                                                                        brownColor]]
                                                                                           ? MVBrownColorOrdinal
                                                                                           : 0;
 
@@ -253,34 +251,34 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 - (NSColor *)readColorFromFile:(FILE *)pFile {
     int colorOrdinal = getc(pFile);
     switch (colorOrdinal) {
-    case MVBlackColorOrdinal:
-        return [NSColor blackColor];
-    case MVDarkGrayColorOrdinal:
-        return [NSColor darkGrayColor];
-    case MVLightGrayColorOrdinal:
-        return [NSColor lightGrayColor];
-    case MVWhiteColorOrdinal:
-        return [NSColor whiteColor];
-    case MVGrayColorOrdinal:
-        return [NSColor grayColor];
-    case MVRedColorOrdinal:
-        return [NSColor redColor];
-    case MVGreenColorOrdinal:
-        return [NSColor greenColor];
-    case MVBlueColorOrdinal:
-        return [NSColor blueColor];
-    case MVCyanColorOrdinal:
-        return [NSColor cyanColor];
-    case MVYellowColorOrdinal:
-        return [NSColor yellowColor];
-    case MVMagentaColorOrdinal:
-        return [NSColor magentaColor];
-    case MVOrangeColorOrdinal:
-        return [NSColor orangeColor];
-    case MVPurpleColorOrdinal:
-        return [NSColor purpleColor];
-    case MVBrownColorOrdinal:
-        return [NSColor brownColor];
+        case MVBlackColorOrdinal:
+            return [NSColor blackColor];
+        case MVDarkGrayColorOrdinal:
+            return [NSColor darkGrayColor];
+        case MVLightGrayColorOrdinal:
+            return [NSColor lightGrayColor];
+        case MVWhiteColorOrdinal:
+            return [NSColor whiteColor];
+        case MVGrayColorOrdinal:
+            return [NSColor grayColor];
+        case MVRedColorOrdinal:
+            return [NSColor redColor];
+        case MVGreenColorOrdinal:
+            return [NSColor greenColor];
+        case MVBlueColorOrdinal:
+            return [NSColor blueColor];
+        case MVCyanColorOrdinal:
+            return [NSColor cyanColor];
+        case MVYellowColorOrdinal:
+            return [NSColor yellowColor];
+        case MVMagentaColorOrdinal:
+            return [NSColor magentaColor];
+        case MVOrangeColorOrdinal:
+            return [NSColor orangeColor];
+        case MVPurpleColorOrdinal:
+            return [NSColor purpleColor];
+        case MVBrownColorOrdinal:
+            return [NSColor brownColor];
     }
 
     float fred, fgreen, fblue, falpha;
@@ -296,7 +294,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 
 //----------------------------------------------------------------------------
 - (void)saveAttributestoFile:(FILE *)pFile {
-    uint32_t numAttributes = [attributes count];
+    NSUInteger numAttributes = [attributes count];
     fwrite(&numAttributes, sizeof(uint32_t), 1, pFile);
 
     for (NSString *key in [attributes allKeys]) {
@@ -318,20 +316,20 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 
         putc(keyOrdinal, pFile);
         switch (keyOrdinal) {
-        case MVUnderlineAttributeOrdinal:
-            [self writeString:value toFile:pFile];
-            break;
-        case MVCellColorAttributeOrdinal:
-            [self writeColor:value toFile:pFile];
-            break;
-        case MVTextColorAttributeOrdinal:
-            [self writeColor:value toFile:pFile];
-            break;
-        case MVMetaDataAttributeOrdinal:
-            [self writeString:value toFile:pFile];
-            break;
-        default:
-            NSLog(@"warning: unknown attribute key");
+            case MVUnderlineAttributeOrdinal:
+                [self writeString:value toFile:pFile];
+                break;
+            case MVCellColorAttributeOrdinal:
+                [self writeColor:value toFile:pFile];
+                break;
+            case MVTextColorAttributeOrdinal:
+                [self writeColor:value toFile:pFile];
+                break;
+            case MVMetaDataAttributeOrdinal:
+                [self writeString:value toFile:pFile];
+                break;
+            default:
+                NSLog(@"warning: unknown attribute key");
         }
     }
 }
@@ -346,24 +344,24 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     while (numAttributes-- > 0) {
         int keyOrdinal = getc(pFile);
         switch (keyOrdinal) {
-        case MVUnderlineAttributeOrdinal:
-            [_attributes setObject:[self readStringFromFile:pFile]
-                            forKey:MVUnderlineAttributeName];
-            break;
-        case MVCellColorAttributeOrdinal:
-            [_attributes setObject:[self readColorFromFile:pFile]
-                            forKey:MVCellColorAttributeName];
-            break;
-        case MVTextColorAttributeOrdinal:
-            [_attributes setObject:[self readColorFromFile:pFile]
-                            forKey:MVTextColorAttributeName];
-            break;
-        case MVMetaDataAttributeOrdinal:
-            [_attributes setObject:[self readStringFromFile:pFile]
-                            forKey:MVMetaDataAttributeName];
-            break;
-        default:
-            NSLog(@"warning: unknown attribute key");
+            case MVUnderlineAttributeOrdinal:
+                [_attributes setObject:[self readStringFromFile:pFile]
+                                forKey:MVUnderlineAttributeName];
+                break;
+            case MVCellColorAttributeOrdinal:
+                [_attributes setObject:[self readColorFromFile:pFile]
+                                forKey:MVCellColorAttributeName];
+                break;
+            case MVTextColorAttributeOrdinal:
+                [_attributes setObject:[self readColorFromFile:pFile]
+                                forKey:MVTextColorAttributeName];
+                break;
+            case MVMetaDataAttributeOrdinal:
+                [_attributes setObject:[self readStringFromFile:pFile]
+                                forKey:MVMetaDataAttributeName];
+                break;
+            default:
+                NSLog(@"warning: unknown attribute key");
         }
     }
 
@@ -375,9 +373,8 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     // dont need to seek, we always append new items
     // fseek(pFile, 0, SEEK_END);
 
-    if (coloumnsOffset == 0) // isSaved == NO
-    {
-        uint32_t filePos = ftell(pFile);
+    if (coloumnsOffset == 0) { // isSaved == NO
+        long filePos = ftell(pFile);
         [self writeString:coloumns.offsetStr toFile:(FILE *)pFile];
         [self writeString:coloumns.dataStr toFile:(FILE *)pFile];
         [self writeString:coloumns.descriptionStr toFile:(FILE *)pFile];
@@ -404,7 +401,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
             attributes = _attributes;
         }
 
-        uint32_t filePos = ftell(pFile);
+        long filePos = ftell(pFile);
         [self saveAttributestoFile:(FILE *)pFile];
         dirty = NO;
         attributesOffset = filePos;
@@ -463,8 +460,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 
 //----------------------------------------------------------------------------
 - (void)clear {
-    if (coloumnsOffset > 0) // isSaved == YES
-    {
+    if (coloumnsOffset > 0) { // isSaved == YES
         coloumns = nil;
 
         if (dirty == NO) {
@@ -526,8 +522,8 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 }
 
 //----------------------------------------------------------------------------
-- (void)insertRowWithOffset:(uint32_t)
-                     offset:(id)col0
+- (void)insertRowWithOffset:(NSUInteger)offset
+                           :(id)col0
                            :(id)col1
                            :(id)col2
                            :(id)col3 {
@@ -572,7 +568,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 //----------------------------------------------------------------------------
 //  input are name-value pairs
 //----------------------------------------------------------------------------
-- (NSMutableDictionary *)attributesWithPairs:(id)firstArg:(va_list)args {
+- (NSMutableDictionary *)attributesWithPairs:(id)firstArg list:(va_list)args {
     NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 
     NSString *name = nil;
@@ -602,10 +598,11 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 }
 
 //----------------------------------------------------------------------------
-- (void)setAttributes:(id)firstArg, ... {
+- (void)setAttributes:(id)firstArg, ...
+{
     va_list args;
     va_start(args, firstArg);
-    NSMutableDictionary *attributes = [self attributesWithPairs:firstArg:args];
+    NSMutableDictionary *attributes = [self attributesWithPairs:firstArg list:args];
     va_end(args);
 
     MVRow *row = [rows lastObject];
@@ -616,10 +613,11 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 }
 
 //----------------------------------------------------------------------------
-- (void)setAttributesForRowIndex:(NSUInteger)index:(id)firstArg, ... {
+- (void)setAttributesForRowIndex:(NSUInteger)index args:(id)firstArg, ...
+{
     va_list args;
     va_start(args, firstArg);
-    NSMutableDictionary *attributes = [self attributesWithPairs:firstArg:args];
+    NSMutableDictionary *attributes = [self attributesWithPairs:firstArg list:args];
     va_end(args);
 
     MVRow *row = [rows objectAtIndex:index];
@@ -630,16 +628,17 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 }
 
 //----------------------------------------------------------------------------
-- (void)setAttributesFromRowIndex:(NSUInteger)index:(id)firstArg, ... {
+- (void)setAttributesFromRowIndex:(NSUInteger)index args:(id)firstArg, ...
+{
     va_list args;
     va_start(args, firstArg);
-    NSDictionary *attributes = [self attributesWithPairs:firstArg:args];
+    NSDictionary *attributes = [self attributesWithPairs:firstArg list:args];
     va_end(args);
 
     for (NSUInteger numRows = [rows count]; index < numRows; ++index) {
         MVRow *row = [rows objectAtIndex:index];
         [self setAttributes:[NSMutableDictionary
-                                dictionaryWithDictionary:attributes]
+                             dictionaryWithDictionary:attributes]
                      forRow:row];
 
         // update saved
@@ -665,7 +664,6 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
           }
         }
          */
-
     } else {
         NSPredicate *predicate =
             [NSPredicate predicateWithFormat:@"self contains[cd] %@", filter];
@@ -692,20 +690,18 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     [tableLock lock];
     [rows sortWithOptions:NSSortStable
           usingComparator:^(id obj1, id obj2) {
-            MVRow *row1 = obj1;
-            MVRow *row2 = obj2;
-            if (row1.offset < row2.offset)
-                return (NSComparisonResult)NSOrderedAscending;
-            if (row1.offset > row2.offset)
-                return (NSComparisonResult)NSOrderedDescending;
-            return (NSComparisonResult)NSOrderedSame;
+              MVRow *row1 = obj1;
+              MVRow *row2 = obj2;
+              if (row1.offset < row2.offset) return (NSComparisonResult)NSOrderedAscending;
+              if (row1.offset > row2.offset) return (NSComparisonResult)NSOrderedDescending;
+              return (NSComparisonResult)NSOrderedSame;
           }];
     [tableLock unlock];
 }
 
 //----------------------------------------------------------------------------
 - (void)saveIndexes {
-    uint32_t rowCount = [rows count];
+    NSUInteger rowCount = [rows count];
     fwrite(&rowCount, sizeof(uint32_t), 1, swapFile);
 
     for (MVRow *row in rows) {
@@ -763,13 +759,13 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     [layout.dataController.treeLock lock];
 
     NSUInteger index = [children
-        indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-          if (node.dataRange.location < [obj dataRange].location) {
-              *stop = YES;
-              return YES;
-          }
-          return NO;
-        }];
+                        indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+                            if (node.dataRange.location < [obj dataRange].location) {
+                                *stop = YES;
+                                return YES;
+                            }
+                            return NO;
+                        }];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc postNotificationName:MVDataTreeWillChangeNotification
@@ -791,8 +787,8 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 
 //----------------------------------------------------------------------------
 - (MVNode *)insertChild:(NSString *)_caption
-               location:(uint32_t)location
-                 length:(uint32_t)length {
+               location:(NSInteger)location
+                 length:(NSUInteger)length {
     MVNode *node = [[MVNode alloc] init];
     node.caption = _caption;
     node.dataRange = NSMakeRange(location, length);
@@ -804,8 +800,8 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 
 //----------------------------------------------------------------------------
 - (MVNode *)insertChildWithDetails:(NSString *)_caption
-                          location:(uint32_t)location
-                            length:(uint32_t)length
+                          location:(NSInteger)location
+                            length:(NSUInteger)length
                              saver:(MVNodeSaver &)saver {
     MVNode *node = [self insertChild:_caption location:location length:length];
     MVLayout *layout = [userInfo objectForKey:MVLayoutUserInfoKey];
@@ -838,11 +834,9 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     MVLayout *layout = [userInfo objectForKey:MVLayoutUserInfoKey];
     FILE *pFile = fopen(CSTRING(layout.archiver.swapPath), "r");
     if (pFile != NULL) {
-        if (details != nil) // saving in progress
-        {
+        if (details != nil) { // saving in progress
             details.swapFile = pFile;
-        } else if (detailsOffset != 0) // saved and has content
-        {
+        } else if (detailsOffset != 0) { // saved and has content
             [self loadFromFile:pFile];
         }
     }
@@ -879,7 +873,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
     MVLayout *layout = [userInfo objectForKey:MVLayoutUserInfoKey];
     [layout.dataController updateStatus:MVStatusTaskStarted];
 
-    uint32_t filePos = ftell(pFile);
+    long filePos = ftell(pFile);
     details.swapFile = pFile;
     [details saveIndexes];
     detailsOffset = filePos;
@@ -922,7 +916,7 @@ NSString *const MVStatusTaskTerminated = @"MVStatusTaskTerminated";
 @implementation MVDataController
 
 @synthesize fileName, fileData, realData, layouts, rootNode, selectedNode,
-    treeLock;
+treeLock;
 
 //-----------------------------------------------------------------------------
 /*
@@ -950,60 +944,60 @@ CFTypeRef)layout));
 //----------------------------------------------------------------------------
 - (NSString *)getMachine:(cpu_type_t)cputype {
     switch (cputype) {
-    default:
-        return @"???";
-    case CPU_TYPE_I386:
-        return @"X86";
-    case CPU_TYPE_POWERPC:
-        return @"PPC";
-    case CPU_TYPE_X86_64:
-        return @"X86_64";
-    case CPU_TYPE_POWERPC64:
-        return @"PPC64";
-    case CPU_TYPE_ARM:
-        return @"ARM";
-    case CPU_TYPE_ARM64:
-        return @"ARM64";
+        default:
+            return @"???";
+        case CPU_TYPE_I386:
+            return @"X86";
+        case CPU_TYPE_POWERPC:
+            return @"PPC";
+        case CPU_TYPE_X86_64:
+            return @"X86_64";
+        case CPU_TYPE_POWERPC64:
+            return @"PPC64";
+        case CPU_TYPE_ARM:
+            return @"ARM";
+        case CPU_TYPE_ARM64:
+            return @"ARM64";
     }
 }
 
 //----------------------------------------------------------------------------
 - (NSString *)getARMCpu:(cpu_subtype_t)cpusubtype {
     switch (cpusubtype) {
-    default:
-        return @"???";
-    case CPU_SUBTYPE_ARM_ALL:
-        return @"ARM_ALL";
-    case CPU_SUBTYPE_ARM_V4T:
-        return @"ARM_V4T";
-    case CPU_SUBTYPE_ARM_V6:
-        return @"ARM_V6";
-    case CPU_SUBTYPE_ARM_V5TEJ:
-        return @"ARM_V5TEJ";
-    case CPU_SUBTYPE_ARM_XSCALE:
-        return @"ARM_XSCALE";
-    case CPU_SUBTYPE_ARM_V7:
-        return @"ARM_V7";
-    case CPU_SUBTYPE_ARM_V7F:
-        return @"ARM_V7F";
-    case CPU_SUBTYPE_ARM_V7K:
-        return @"ARM_V7K";
-    case CPU_SUBTYPE_ARM_V7S:
-        return @"ARM_V7S";
-    case CPU_SUBTYPE_ARM_V8:
-        return @"ARM_V8";
+        default:
+            return @"???";
+        case CPU_SUBTYPE_ARM_ALL:
+            return @"ARM_ALL";
+        case CPU_SUBTYPE_ARM_V4T:
+            return @"ARM_V4T";
+        case CPU_SUBTYPE_ARM_V6:
+            return @"ARM_V6";
+        case CPU_SUBTYPE_ARM_V5TEJ:
+            return @"ARM_V5TEJ";
+        case CPU_SUBTYPE_ARM_XSCALE:
+            return @"ARM_XSCALE";
+        case CPU_SUBTYPE_ARM_V7:
+            return @"ARM_V7";
+        case CPU_SUBTYPE_ARM_V7F:
+            return @"ARM_V7F";
+        case CPU_SUBTYPE_ARM_V7K:
+            return @"ARM_V7K";
+        case CPU_SUBTYPE_ARM_V7S:
+            return @"ARM_V7S";
+        case CPU_SUBTYPE_ARM_V8:
+            return @"ARM_V8";
     }
 }
 
 //----------------------------------------------------------------------------
 - (NSString *)getARM64Cpu:(cpu_subtype_t)cpusubtype {
     switch (cpusubtype) {
-    default:
-        return @"???";
-    case CPU_SUBTYPE_ARM64_ALL:
-        return @"ARM64_ALL";
-    case CPU_SUBTYPE_ARM64_V8:
-        return @"ARM64_V8";
+        default:
+            return @"???";
+        case CPU_SUBTYPE_ARM64_ALL:
+            return @"ARM64_ALL";
+        case CPU_SUBTYPE_ARM64_V8:
+            return @"ARM64_V8";
     }
 }
 
@@ -1021,9 +1015,9 @@ CFTypeRef)layout));
     NSString *machine = [self getMachine:mach_header->cputype];
 
     node.caption = [NSString
-        stringWithFormat:
-            @"%@ (%@)",
-            mach_header->filetype == MH_OBJECT
+                    stringWithFormat:
+                    @"%@ (%@)",
+                    mach_header->filetype == MH_OBJECT
                 ? @"Object "
                 : mach_header->filetype == MH_EXECUTE
                       ? @"Executable "
@@ -1036,26 +1030,26 @@ CFTypeRef)layout));
                                         : mach_header->filetype == MH_DYLIB
                                               ? @"Shared Library "
                                               : mach_header->filetype ==
-                                                        MH_DYLINKER
+                    MH_DYLINKER
                                                     ? @"Dynamic Link Editor"
                                                     : mach_header->filetype ==
-                                                              MH_BUNDLE
+                    MH_BUNDLE
                                                           ? @"Bundle"
                                                           : mach_header->filetype ==
-                                                                    MH_DYLIB_STUB
+                    MH_DYLIB_STUB
                                                                 ? @"Shared "
-                                                                  @"Library "
-                                                                  @"Stub"
+                    @"Library "
+                    @"Stub"
                                                                 : mach_header->filetype ==
-                                                                          MH_DSYM
+                    MH_DSYM
                                                                       ? @"Debug"
-                                                                        @" Symb"
-                                                                        @"ols"
+                    @" Symb"
+                    @"ols"
                                                                       : mach_header->filetype ==
-                                                                                MH_KEXT_BUNDLE
+                    MH_KEXT_BUNDLE
                                                                             ? @"Kernel Extension"
                                                                             : @"?????",
-            [machine isEqualToString:@"ARM"] == YES
+                    [machine isEqualToString:@"ARM"] == YES
                 ? [self getARMCpu:mach_header->cpusubtype]
                 : machine];
 
@@ -1078,9 +1072,9 @@ CFTypeRef)layout));
     NSString *machine = [self getMachine:mach_header_64->cputype];
 
     node.caption = [NSString
-        stringWithFormat:
-            @"%@ (%@)",
-            mach_header_64->filetype == MH_OBJECT
+                    stringWithFormat:
+                    @"%@ (%@)",
+                    mach_header_64->filetype == MH_OBJECT
                 ? @"Object "
                 : mach_header_64->filetype == MH_EXECUTE
                       ? @"Executable "
@@ -1093,30 +1087,30 @@ CFTypeRef)layout));
                                         : mach_header_64->filetype == MH_DYLIB
                                               ? @"Shared Library "
                                               : mach_header_64->filetype ==
-                                                        MH_DYLINKER
+                    MH_DYLINKER
                                                     ? @"Dynamic Link Editor"
                                                     : mach_header_64
-                                                                  ->filetype ==
-                                                              MH_BUNDLE
+                    ->filetype ==
+                    MH_BUNDLE
                                                           ? @"Bundle"
                                                           : mach_header_64
-                                                                        ->filetype ==
-                                                                    MH_DYLIB_STUB
+                    ->filetype ==
+                    MH_DYLIB_STUB
                                                                 ? @"Shared "
-                                                                  @"Library "
-                                                                  @"Stub"
+                    @"Library "
+                    @"Stub"
                                                                 : mach_header_64
-                                                                              ->filetype ==
-                                                                          MH_DSYM
+                    ->filetype ==
+                    MH_DSYM
                                                                       ? @"Debug"
-                                                                        @" Symb"
-                                                                        @"ols"
+                    @" Symb"
+                    @"ols"
                                                                       : mach_header_64
-                                                                                    ->filetype ==
-                                                                                MH_KEXT_BUNDLE
+                    ->filetype ==
+                    MH_KEXT_BUNDLE
                                                                             ? @"Kernel Extension"
                                                                             : @"?????",
-            [machine isEqualToString:@"ARM64"] == YES
+                    [machine isEqualToString:@"ARM64"] == YES
                 ? [self getARM64Cpu:mach_header_64->cpusubtype]
                 : machine];
 
@@ -1155,46 +1149,43 @@ CFTypeRef)layout));
 //----------------------------------------------------------------------------
 // create Mach-O layouts based on file headers
 - (void)createLayouts:(MVNode *)parent
-             location:(uint32_t)location
-               length:(uint32_t)length {
+             location:(NSInteger)location
+               length:(NSUInteger)length {
     uint32_t magic = *(uint32_t *)((uint8_t *)[fileData bytes] + location);
 
     switch (magic) {
-    case FAT_MAGIC:
-    case FAT_CIGAM:
-    case FAT_MAGIC_64:
-    case FAT_CIGAM_64: {
-        struct fat_header fat_header;
-        [fileData getBytes:&fat_header
-                     range:NSMakeRange(location, sizeof(struct fat_header))];
-        if (magic == FAT_CIGAM || magic == FAT_CIGAM_64)
-            swap_fat_header(&fat_header, NX_LittleEndian);
-        [self createFatLayout:parent fat_header:&fat_header];
-    } break;
+        case FAT_MAGIC:
+        case FAT_CIGAM:
+        case FAT_MAGIC_64:
+        case FAT_CIGAM_64: {
+            struct fat_header fat_header;
+            [fileData getBytes:&fat_header
+                         range:NSMakeRange(location, sizeof(struct fat_header))];
+            if (magic == FAT_CIGAM || magic == FAT_CIGAM_64) swap_fat_header(&fat_header, NX_LittleEndian);
+            [self createFatLayout:parent fat_header:&fat_header];
+        } break;
 
-    case MH_MAGIC:
-    case MH_CIGAM: {
-        struct mach_header mach_header;
-        [fileData getBytes:&mach_header
-                     range:NSMakeRange(location, sizeof(struct mach_header))];
-        if (magic == MH_CIGAM)
-            swap_mach_header(&mach_header, NX_LittleEndian);
-        [self createMachOLayout:parent mach_header:&mach_header];
-    } break;
+        case MH_MAGIC:
+        case MH_CIGAM: {
+            struct mach_header mach_header;
+            [fileData getBytes:&mach_header
+                         range:NSMakeRange(location, sizeof(struct mach_header))];
+            if (magic == MH_CIGAM) swap_mach_header(&mach_header, NX_LittleEndian);
+            [self createMachOLayout:parent mach_header:&mach_header];
+        } break;
 
-    case MH_MAGIC_64:
-    case MH_CIGAM_64: {
-        struct mach_header_64 mach_header_64;
-        [fileData
-            getBytes:&mach_header_64
-               range:NSMakeRange(location, sizeof(struct mach_header_64))];
-        if (magic == MH_CIGAM_64)
-            swap_mach_header_64(&mach_header_64, NX_LittleEndian);
-        [self createMachO64Layout:parent mach_header_64:&mach_header_64];
-    } break;
+        case MH_MAGIC_64:
+        case MH_CIGAM_64: {
+            struct mach_header_64 mach_header_64;
+            [fileData
+             getBytes:&mach_header_64
+                range:NSMakeRange(location, sizeof(struct mach_header_64))];
+            if (magic == MH_CIGAM_64) swap_mach_header_64(&mach_header_64, NX_LittleEndian);
+            [self createMachO64Layout:parent mach_header_64:&mach_header_64];
+        } break;
 
-    default:
-        [self createArchiveLayout:parent machine:nil];
+        default:
+            [self createArchiveLayout:parent machine:nil];
     }
 
     parent.dataRange = NSMakeRange(location, length);
@@ -1214,7 +1205,7 @@ CFTypeRef)layout));
         struct fat_arch fat_arch;
         [fileData getBytes:&fat_arch
                      range:NSMakeRange(sizeof(struct fat_header) +
-                                           nimg * sizeof(struct fat_arch),
+                                       nimg * sizeof(struct fat_arch),
                                        sizeof(struct fat_arch))];
         swap_fat_arch(&fat_arch, 1, NX_LittleEndian);
 
@@ -1252,8 +1243,8 @@ CFTypeRef)layout));
     [nc postNotificationName:MVDataTreeChangedNotification
                       object:self
                     userInfo:node ? [NSDictionary
-                                        dictionaryWithObject:node
-                                                      forKey:MVNodeUserInfoKey]
+                      dictionaryWithObject:node
+                                    forKey:MVNodeUserInfoKey]
                                   : nil];
 }
 
@@ -1269,8 +1260,8 @@ CFTypeRef)layout));
     [nc postNotificationName:MVThreadStateChangedNotification
                       object:self
                     userInfo:[NSDictionary
-                                 dictionaryWithObject:status
-                                               forKey:MVStatusUserInfoKey]];
+               dictionaryWithObject:status
+                             forKey:MVStatusUserInfoKey]];
 }
 
 @end
@@ -1414,10 +1405,13 @@ CFTypeRef)layout));
 @end
 
 //-----------------------------------------------------------------------------
-MVNodeSaver::MVNodeSaver() : m_node(nil) {}
+MVNodeSaver::MVNodeSaver() : m_node(nil)
+{
+}
 
 //-----------------------------------------------------------------------------
-MVNodeSaver::~MVNodeSaver() {
+MVNodeSaver::~MVNodeSaver()
+{
     MVLayout *layout = [m_node.userInfo objectForKey:MVLayoutUserInfoKey];
     [layout.archiver addObjectToSave:m_node];
 }

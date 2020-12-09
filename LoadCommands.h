@@ -14,7 +14,7 @@
 
 - (MVNode *)createLoadCommandNode:(MVNode *)parent
                           caption:(NSString *)caption
-                         location:(uint32_t)location
-                           length:(uint32_t)length
+                         location:(NSUInteger)location
+                           length:(NSUInteger)length
                           command:(uint32_t)command;
 @end

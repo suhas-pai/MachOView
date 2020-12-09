@@ -81,22 +81,22 @@ typedef std::map<uint64_t, uint64_t>
 - (NSDictionary *)userInfoForSection:(struct section const *)section;
 - (NSDictionary *)userInfoForSection64:(struct section_64 const *)section_64;
 
-- (MVNode *)sectionNodeContainsRVA:(uint32_t)rva;
-- (MVNode *)sectionNodeContainsRVA64:(uint64_t)rva;
+- (MVNode *)sectionNodeContainsRVA:(NSUInteger)rva;
+- (MVNode *)sectionNodeContainsRVA64:(NSUInteger)rva;
 
-- (NSString *)findSectionContainsRVA:(uint32_t)rva;
-- (NSString *)findSectionContainsRVA64:(uint64_t)rva64;
+- (NSString *)findSectionContainsRVA:(NSUInteger)rva;
+- (NSString *)findSectionContainsRVA64:(NSUInteger)rva64;
 
-- (NSString *)findSymbolAtRVA:(uint32_t)rva;
+- (NSString *)findSymbolAtRVA:(NSUInteger)rva;
 - (NSString *)findSymbolAtRVA64:(uint64_t)rva64;
 
-- (uint32_t)fileOffsetToRVA:(uint32_t)offset;
-- (uint64_t)fileOffsetToRVA64:(uint32_t)offset;
+- (uint32_t)fileOffsetToRVA:(NSUInteger)offset;
+- (uint64_t)fileOffsetToRVA64:(uint64_t)offset;
 
-- (uint32_t)RVAToFileOffset:(uint32_t)rva;
+- (uint32_t)RVAToFileOffset:(NSUInteger)rva;
 - (uint32_t)RVA64ToFileOffset:(uint64_t)rva64;
 
-- (void)addRelocAtFileOffset:(uint32_t)offset
+- (void)addRelocAtFileOffset:(NSUInteger)offset
                   withLength:(uint32_t)length
                     andValue:(uint64_t)value;
 
